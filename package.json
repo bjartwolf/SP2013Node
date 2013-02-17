@@ -1,0 +1,30 @@
+{
+  "name": "nodeSPDemo",
+  "version": "0.0.0-157",
+  "description": "A demo of a SharePoint app in the cloud with node.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bjartwolf/nodeSPDemo"
+  },
+  "author": "Bjartwolf",
+  "license": "BSD",
+  "dependencies": {
+    "express": "~3.1.0",
+    "passport": "~0.1.15",
+    "pkginfo": "0.2.x",
+    "passport-oauth": "0.1.x",
+    "oauth": "0.9.x",
+    "jwt-simple": "0.1.x",
+    "socket.io": "~0.9.13",
+    "jade": "~0.28.1"
+  },
+  "subdomain": "nodeSPDemo",
+  "engines": {
+    "node": "0.8.x"
+  }
+}

@@ -1,0 +1,16 @@
+doctype 5
+html(lang="en")
+  head
+    title= pageTitle
+    script(src='/socket.io/socket.io.js')
+    script
+       var socket = io.connect(location.origin + '/SPio');
+       socket.on('news', function (data) {
+         console.log(data);
+         socket.emit('my other event', { my: 'data' });
+       });
+  body
+    h1 Jade - node template engine
+    #container
+    p I thinks you are #{token} 
+
