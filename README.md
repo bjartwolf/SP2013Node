@@ -1,5 +1,10 @@
-Start a new git repo without the keys in it
 
+The strategy for SharePoint is mostly taken from here, but it has been 
+modified a bit.
+
+https://github.com/QuePort/passport-sharepoint
+
+todo... a lot of stuff
 Stub out the authorization server and decouple all the things
 
 a keys.js file should contain secret keys for app and cookie-signing
