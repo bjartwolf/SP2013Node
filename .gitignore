@@ -1,3 +1,4 @@
 *.log
-keys.js
 *.swp
+setkeys.sh
+node_modules/
