@@ -33,3 +33,5 @@ when using nodejitsu, like I do, you can run
     jitsu env set clientSecret "Lbac16P1mX+amQjmfP2psKMahsfnTbsJKzv19jLi4b0=";
     jitsu env set cookieSecret "thisisfreakinghardtoguess";
 ```
+
+![OAuth 2.0 dance](http://www.gliffy.com/pubdoc/4318056/M.png)
