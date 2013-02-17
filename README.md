@@ -34,4 +34,4 @@ when using nodejitsu, like I do, you can run
     jitsu env set cookieSecret "thisisfreakinghardtoguess";
 ```
 
-![OAuth 2.0 dance](http://www.gliffy.com/pubdoc/4318056/M.png)
+![OAuth 2.0 dance](http://www.gliffy.com/pubdoc/4318056/L.png)
