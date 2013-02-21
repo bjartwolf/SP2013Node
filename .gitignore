@@ -1,4 +1,5 @@
 *.log
 *.swp
 setkeys.sh
+devkeys.js
 node_modules/

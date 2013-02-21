@@ -5,9 +5,15 @@ html(lang="en")
     script(src='/socket.io/socket.io.js')
     script
        var socket = io.connect(location.origin + '/SPio');
-       socket.on('news', function (data) {
+       socket.on('sendTimer', function (data) {
+         console.log('sending timer');
+         socket.emit('timerSent', { time: Date.now() });
+       });
+       socket.on('timerPingback', function (data) {
+         console.log('recieved pingback');
          console.log(data);
-         socket.emit('my other event', { my: 'data' });
+         console.log(Date.now());
+         console.log(Date.now() - data.time);
        });
   body
     h1 Jade - node template engine

@@ -2,13 +2,21 @@
 // should probably hide a lot of the passport/connect/cookieparseing/socketsetup into one
 // login-module
 // and then have app-routes and socket.emits here
+// Overwrite keys with devkeys
+
+// Just to be able to git deploy without checking in files
+if (!process.env.clientID) {
+   var keys = require('./devkeys.js');// importing secret keys,
+} else {
+   var keys = require('./keys.js');// import from env variables 
+}
+
 var SharePointStrategy = require('./strategy.js'),
     express = require('express'),
     passport = require('passport'),
     app = express(),
     qs = require('querystring'),
     http = require('http'),
-    keys = require('./keys.js'), // importing secret keys,
     expressCookies = require('express/node_modules/cookie'),
     connectUtils = require('express/node_modules/connect/lib/utils'),
     MemoryStore = express.session.MemoryStore,
@@ -110,4 +118,8 @@ SPio.authorization(function(handshakeData, accept) {
  
 SPio.on('connection', function (client) {
   var username = client.handshake.session.user.username;
+  setTimeout(function () { client.emit('sendTimer', 'do it');}, 1000);
+  client.on('timerSent', function (data) {
+        client.emit('timerPingback', data);
+  });
 });
