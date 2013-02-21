@@ -25,7 +25,6 @@ if (!process.env.clientID) {
    var options = {key: privateKey, cert: certificate};
 } else {
    var keys = require('./keys.js');// import from env variables 
-   var options = {};
 }
 app.configure(function () {
   app.use(express.bodyParser());
@@ -74,7 +73,13 @@ passport.use(new SharePointStrategy({
 
 //TODO: memorystore in session should be replaced with memcached or something
 //Mongo is free. 
-//app.post('/authenticate/sharepoint',
+// this is bullshit... but just forgot something in the one app
+app.post('/authenticate/sharepoint',
+  passport.authenticate('sharepoint'),
+  function(req, res){
+    res.redirect('/'); 
+  });
+
 app.post('/authenticate/sharepoint/Pages/Default.aspx',
   passport.authenticate('sharepoint'),
   function(req, res){
@@ -93,8 +98,11 @@ app.get('/', function (req, res) {
   }
 });
 
-//var server = app.listen(process.env.port || 1338);
-var server = https.createServer(options, app).listen(1337);
+if (process.env.port) {
+    var server = https.createServer(options, app).listen(process.env.port);
+} else {
+    var server = http.createServer(app).listen(process.env.port);
+}
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 // of creates a namespace or room 
