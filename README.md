@@ -15,6 +15,15 @@ I realize there is a lot of documentation to do. But it's a proof of concept and
 todo... a lot of stuff
 Stub out the authorization server and decouple all the things
 
+## Creating certs for https on localhost
+I've checked in some dummy certs, but in case they won't work or something, here's how I created them.
+```shell
+openssl genrsa -out privatekey.pem 2048 
+openssl req -new -key privatekey.pem -out certrequest.csr 
+openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
+```
+
+
 ## Keys
 I can't put the secrets in here, so I have not uploaded any real keys. You should make your own cookieSecret and get your own clientID and clientSecretfrom SharePoint when you deploy the app. You can put them in the keys file, like shown below, or if you use nodejitsu to run your app, like I do, you can use environment variables.
 

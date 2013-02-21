@@ -56,10 +56,8 @@ Strategy.prototype.authenticate = function(req, options) {
     //       query parameters, and should be propagated to the application.
     return this.fail();
   }
-  
   spAppToken = undefined;
   spHostUrl = undefined;
-      
   // load token from request
   if (req.body && req.body.SPAppToken)
   	spAppToken = req.body.SPAppToken;

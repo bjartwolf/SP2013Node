@@ -4,24 +4,29 @@
 // and then have app-routes and socket.emits here
 // Overwrite keys with devkeys
 
-// Just to be able to git deploy without checking in files
-if (!process.env.clientID) {
-   var keys = require('./devkeys.js');// importing secret keys,
-} else {
-   var keys = require('./keys.js');// import from env variables 
-}
-
 var SharePointStrategy = require('./strategy.js'),
     express = require('express'),
     passport = require('passport'),
     app = express(),
     qs = require('querystring'),
     http = require('http'),
+    https = require('https'),
     expressCookies = require('express/node_modules/cookie'),
     connectUtils = require('express/node_modules/connect/lib/utils'),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore;
 
+// Just to be able to git deploy without checking in files
+if (!process.env.clientID) {
+   var fs = require('fs');
+   var keys = require('./devkeys.js');// importing secret keys,
+   var privateKey = fs.readFileSync('dummyPrivateKey.pem').toString();
+   var certificate = fs.readFileSync('dummyCertificate.pem').toString();
+   var options = {key: privateKey, cert: certificate};
+} else {
+   var keys = require('./keys.js');// import from env variables 
+   var options = {};
+}
 app.configure(function () {
   app.use(express.bodyParser());
   app.set('views', __dirname + '/template');
@@ -69,7 +74,8 @@ passport.use(new SharePointStrategy({
 
 //TODO: memorystore in session should be replaced with memcached or something
 //Mongo is free. 
-app.post('/authenticate/sharepoint',
+//app.post('/authenticate/sharepoint',
+app.post('/authenticate/sharepoint/Pages/Default.aspx',
   passport.authenticate('sharepoint'),
   function(req, res){
     res.redirect('/'); 
@@ -87,7 +93,8 @@ app.get('/', function (req, res) {
   }
 });
 
-var server = app.listen(process.env.port || 1337);
+//var server = app.listen(process.env.port || 1338);
+var server = https.createServer(options, app).listen(1337);
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 // of creates a namespace or room 
@@ -118,7 +125,7 @@ SPio.authorization(function(handshakeData, accept) {
  
 SPio.on('connection', function (client) {
   var username = client.handshake.session.user.username;
-  setTimeout(function () { client.emit('sendTimer', 'do it');}, 1000);
+  setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
   client.on('timerSent', function (data) {
         client.emit('timerPingback', data);
   });
