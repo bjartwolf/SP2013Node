@@ -1,8 +1,7 @@
 var expressCookies = require('express/node_modules/cookie'),
     connectUtils = require('express/node_modules/connect/lib/utils');
 
-exports.startListen = function (server, keys, sessionStore, users) {
-    var io = require('socket.io').listen(server);
+exports.startListen = function (server, keys, sessionStore, users, io) {
     io.set('log level', 1);
     // of creates a namespace or room 
     // should create one pr. sharepoint-server?

@@ -15,6 +15,9 @@ html(lang="en")
          console.log(Date.now());
          console.log(Date.now() - data.time);
        });
+       socket.on('yo', function (data) {
+         console.log(data);
+       });
   body
     h1 Jade - node template engine
     #container

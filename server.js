@@ -6,10 +6,12 @@
 
 var express = require('express'),
     passport = require('passport'),
+    request = require('request'),
     app = express(),
     MemoryStore = express.session.MemoryStore,
-    sessionStore = new MemoryStore;
-    
+    sessionStore = new MemoryStore,
+    https = require('https');
+
 if (process.env.clientID) { var production = true; }
 
 // Just to be able to git deploy without checking in files
@@ -60,18 +62,17 @@ if (production){
     var http = require('http');
     var server = http.createServer(app).listen(process.env.port);
 } else {
-    var https = require('https');
     var server = https.createServer(options, app).listen(1337);
 }
 
 
-var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, users);
+var io = require('socket.io').listen(server);
+var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, users,io);
 
 SPio.on('connection', function (client) {
-  setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
+//  setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
   client.on('timerSent', function (data) {
       var username = client.handshake.session.user.username;
-      console.log(username);
       client.emit('timerPingback', data);
   });
 });
@@ -87,4 +88,21 @@ app.get('/', function (req, res) {
   }
 });
 
-
+app.get('/lists', function (req, res) {
+  if (req.user) {
+    var headers = {
+        'Accept': 'application/json;odata=verbose',
+        'Authorization' : 'Bearer ' + req.user.accessToken
+    };
+    var options = {
+        url: 'https://bjartwolf.sharepoint.com/_api/web/title', 
+        headers : headers
+    };
+    request.get(options, function(error, response, body) {
+        io.sockets.in('SPio').emit('yo', body);
+    });
+    res.send('oki');
+  } else {
+    res.send('fuck oof');
+  }
+});

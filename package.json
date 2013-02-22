@@ -1,6 +1,6 @@
 {
   "name": "nodeSPDemo",
-  "version": "0.1.1-10",
+  "version": "0.1.1-11",
   "description": "A demo of a SharePoint app in the cloud with node.js",
   "main": "server.js",
   "scripts": {
@@ -21,7 +21,8 @@
     "oauth": "0.9.x",
     "jwt-simple": "0.1.x",
     "socket.io": "~0.9.13",
-    "jade": "~0.28.1"
+    "jade": "~0.28.1",
+    "request": "~2.14.0"
   },
   "subdomain": "nodeSPDemo",
   "engines": {
