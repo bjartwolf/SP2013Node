@@ -10,15 +10,17 @@ var express = require('express'),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore;
     
+if (process.env.clientID) { var production = true; }
+
 // Just to be able to git deploy without checking in files
-if (!process.env.clientID) {
+if (production) {
+   var keys = require('./keys.js');// import from env variables 
+} else {
    var fs = require('fs');
    var keys = require('./devkeys.js');// importing secret keys,
    var privateKey = fs.readFileSync('dummyPrivateKey.pem').toString();
    var certificate = fs.readFileSync('dummyCertificate.pem').toString();
    var options = {key: privateKey, cert: certificate};
-} else {
-   var keys = require('./keys.js');// import from env variables 
 }
 
 app.configure(function () {
@@ -65,7 +67,7 @@ app.get('/', function (req, res) {
 });
 
 // Starting server
-if (process.env.port) {
+if (production){
     var http = require('http');
     var server = http.createServer(app).listen(process.env.port);
 } else {
