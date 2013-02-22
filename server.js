@@ -75,4 +75,15 @@ if (production){
     var server = https.createServer(options, app).listen(1337);
 }
 
-require('./sessionIO.js').startListen(server, keys, sessionStore, users);
+
+var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, users);
+
+SPio.on('connection', function (client) {
+  setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
+  client.on('timerSent', function (data) {
+      var username = client.handshake.session.user.username;
+      console.log(username);
+      client.emit('timerPingback', data);
+  });
+});
+

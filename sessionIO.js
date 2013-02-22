@@ -29,15 +29,5 @@ exports.startListen = function (server, keys, sessionStore, users) {
         }
       })
     });
-     
-    // need to export this stuff so it can be modified in main server or something
-    // or in events or something
-    SPio.on('connection', function (client) {
-      setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
-      client.on('timerSent', function (data) {
-          var username = client.handshake.session.user.username;
-          console.log(username);
-          client.emit('timerPingback', data);
-      });
-    });
+    return SPio;     
 }
