@@ -4,15 +4,12 @@
 // and then have app-routes and socket.emits here
 // Overwrite keys with devkeys
 
-var SharePointStrategy = require('./strategy.js'),
-    express = require('express'),
+var express = require('express'),
     passport = require('passport'),
     app = express(),
-    http = require('http'),
-    https = require('https'),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore;
-
+    
 // Just to be able to git deploy without checking in files
 if (!process.env.clientID) {
    var fs = require('fs');
@@ -23,6 +20,7 @@ if (!process.env.clientID) {
 } else {
    var keys = require('./keys.js');// import from env variables 
 }
+
 app.configure(function () {
   app.use(express.bodyParser());
   app.set('views', __dirname + '/template');
@@ -34,40 +32,9 @@ app.configure(function () {
   app.use(passport.initialize());
   app.use(passport.session());
 });
-
 // serialize and deseriazlie is used by passport to store users in sessions based on user.id, sessions provided by express.session
 var users = [];
-passport.serializeUser(function(user, done) {
-  users[user.id] = user;
-  // this should just set userid in cookie. cookie is signed and secret
-  // not sure where this number is from, though, probably need to make
-  // a smarter id based on url and id or something... or a guid
-  // cookies should be https-only
-  // expires when browser session ends
-  done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-    var user = users[id];
-    if (user) {
-        done(null, users[id]);
-    } else {
-        done('User not found', null);
-    }
-});
-
-passport.use(new SharePointStrategy({
-    clientID: keys.clientID, 
-    clientSecret: keys.clientSecret
-  },
-  function(accessToken, refreshToken, profile, done) {
-        // Adds the tokens to the user
-        // It is later stored by the serialize/deserializeuser functions
-        profile.accessToken = accessToken;
-        profile.refreshToken = refreshToken;
-        return done(null, profile); 
-  }
-));
-
+require('./spPassport.js')(passport, users, keys); 
 //TODO: memorystore in session should be replaced with memcached or something
 //Mongo is free. 
 // this is bullshit... but just forgot something in the one app
@@ -84,10 +51,9 @@ app.post('/authenticate/sharepoint/Pages/Default.aspx',
   });
 
 app.get('/', function (req, res) {
-  // should be restored by deserializer
-  // managed to get the users refreshtoken
   if (req.user) {
-//    var refreshToken = req.user.refreshToken;
+//    console.log(req.user.refreshToken);
+//    console.log(req.user.accessToken);
     var token = req.user.id;
     res.render('index.jade', {token: token, pageTitle: "authorized"});
   } else {
@@ -95,9 +61,13 @@ app.get('/', function (req, res) {
   }
 });
 
+// Starting server
 if (process.env.port) {
+    var http = require('http');
     var server = http.createServer(app).listen(process.env.port);
 } else {
+    var https = require('https');
     var server = https.createServer(options, app).listen(1337);
 }
+
 require('./sessionIO.js').startListen(server, keys, sessionStore, users);
