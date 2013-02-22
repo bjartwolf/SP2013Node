@@ -99,9 +99,9 @@ app.get('/', function (req, res) {
 });
 
 if (process.env.port) {
-    var server = https.createServer(options, app).listen(process.env.port);
-} else {
     var server = http.createServer(app).listen(process.env.port);
+} else {
+    var server = https.createServer(options, app).listen(1337);
 }
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
