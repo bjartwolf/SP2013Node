@@ -34,7 +34,9 @@ app.configure(function () {
 });
 // serialize and deseriazlie is used by passport to store users in sessions based on user.id, sessions provided by express.session
 var users = [];
+
 require('./spPassport.js')(passport, users, keys); 
+
 //TODO: memorystore in session should be replaced with memcached or something
 //Mongo is free. 
 // this is bullshit... but just forgot something in the one app
@@ -44,6 +46,7 @@ app.post('/authenticate/sharepoint',
     res.redirect('/'); 
   });
 
+// redundant, remove when fixed app
 app.post('/authenticate/sharepoint/Pages/Default.aspx',
   passport.authenticate('sharepoint'),
   function(req, res){
