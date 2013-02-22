@@ -55,17 +55,6 @@ app.post('/authenticate/sharepoint/Pages/Default.aspx',
     res.redirect('/'); 
   });
 
-app.get('/', function (req, res) {
-  if (req.user) {
-//    console.log(req.user.refreshToken);
-//    console.log(req.user.accessToken);
-    var token = req.user.id;
-    res.render('index.jade', {token: token, pageTitle: "authorized"});
-  } else {
-    res.render('index.jade', {token: 'NO TOKEn', pageTitle: "no allows.."});
-  }
-});
-
 // Starting server
 if (production){
     var http = require('http');
@@ -86,4 +75,16 @@ SPio.on('connection', function (client) {
       client.emit('timerPingback', data);
   });
 });
+
+app.get('/', function (req, res) {
+  if (req.user) {
+//    console.log(req.user.refreshToken);
+//    console.log(req.user.accessToken);
+    var token = req.user.id;
+    res.render('index.jade', {token: token, pageTitle: "authorized"});
+  } else {
+    res.render('index.jade', {token: 'NO TOKEn', pageTitle: "no allows.."});
+  }
+});
+
 
