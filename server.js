@@ -66,8 +66,6 @@ var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, use
 SPio.on('connection', function (client) {
   console.log('connected socket io');
   setInterval(function () { 
-      console.log('emitting');
-  console.log(io);
       io.of('/SPio').emit('sendTimer', 'do it');
     }, 1000);
   client.on('timerSent', function (data) {
@@ -89,32 +87,56 @@ app.get('/', function (req, res) {
 
 app.get('/lists', function (req, res) {
   if (req.user) {
+    /*
     var headers = {
         'Accept': 'application/json;odata=verbose',
         'Authorization' : 'Bearer ' + req.user.accessToken
     };
     var options = {
+        url: 'https://bjartwolf.sharepoint.com/_api/lists/getbytitle(\'AppList\')?$select=ListItemEntityTypeFullName',
         url: 'https://bjartwolf.sharepoint.com/_api/web/title', 
         headers : headers
     };
     request.get(options, function(error, response, body) {
-        io.sockets.in('SPio').emit('yo', body);
+        res.send(body);
     });
-    var options2 = {
+    */
+
+    var headers = {
         'Accept': 'application/json;odata=verbose',
-        'content-type': 'application/json\;odata=verbose',
-        url: "https://bjartwolf.sharepoint.com/_api/lists/GetByTitle('AppList')/items", 
-        headers : headers,
-        method: 'POST',
-        _metadata: {'type' : 'SP.Data.AppListItem'},
-        'Title' : "BEB" 
+        'Authorization' : 'Bearer ' + req.user.accessToken
     };
-    request(options2, function (e, r, b) {
-       io.sockets.in('SPio').emit('yo2', b);
-       console.log(e); 
-       console.log(r); 
-    });
-    res.send('oki');
+    var options = {
+        url: 'https://bjartwolf.sharepoint.com/_api/contextinfo', 
+        headers : headers
+    };
+    request.post(options, function(error, response, body) {
+        var b = JSON.parse(body);
+        var formdigest = b.d.GetContextWebInformation.FormDigestValue;
+        var headers2 = {
+            'Accept': 'application/json;odata=verbose',
+            'content-type': 'application/json;odata=verbose',
+            'X-RequestDigest': formdigest,
+            'Authorization' : 'Bearer ' + req.user.accessToken
+        };
+        var item = {
+              '__metadata': { 'type': 'SP.Data.AppListListItem'},
+              'Title': 'awesome beb' 
+        };
+
+        var options2 = {
+          url: "https://bjartwolf.sharepoint.com/_api/lists/GetByTitle('AppList')/items", 
+          body: JSON.stringify(item),
+          headers : headers2,
+          method: 'POST',
+        };
+        request(options2, function (e, r, b) {
+          io.of('/SPio').emit('yo2', b);
+          console.log(e); 
+          console.log(r); 
+          res.send(b);
+        });
+     });
   } else {
     res.send('fuck oof');
   }
