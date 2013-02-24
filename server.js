@@ -1,9 +1,3 @@
-// how the f should this application be split up...
-// should probably hide a lot of the passport/connect/cookieparseing/socketsetup into one
-// login-module
-// and then have app-routes and socket.emits here
-// Overwrite keys with devkeys
-
 var express = require('express'),
     passport = require('passport'),
     request = require('request'),
@@ -70,9 +64,14 @@ var io = require('socket.io').listen(server);
 var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, users,io);
 
 SPio.on('connection', function (client) {
-//  setInterval(function () { client.emit('sendTimer', 'do it');}, 1000);
+  console.log('connected socket io');
+  setInterval(function () { 
+      console.log('emitting');
+  console.log(io);
+      io.of('/SPio').emit('sendTimer', 'do it');
+    }, 1000);
   client.on('timerSent', function (data) {
-      var username = client.handshake.session.user.username;
+//      var username = client.handshake.session.user.username;
       client.emit('timerPingback', data);
   });
 });
@@ -100,6 +99,20 @@ app.get('/lists', function (req, res) {
     };
     request.get(options, function(error, response, body) {
         io.sockets.in('SPio').emit('yo', body);
+    });
+    var options2 = {
+        'Accept': 'application/json;odata=verbose',
+        'content-type': 'application/json\;odata=verbose',
+        url: "https://bjartwolf.sharepoint.com/_api/lists/GetByTitle('AppList')/items", 
+        headers : headers,
+        method: 'POST',
+        _metadata: {'type' : 'SP.Data.AppListItem'},
+        'Title' : "BEB" 
+    };
+    request(options2, function (e, r, b) {
+       io.sockets.in('SPio').emit('yo2', b);
+       console.log(e); 
+       console.log(r); 
     });
     res.send('oki');
   } else {

@@ -7,7 +7,8 @@ html(lang="en")
        var socket = io.connect(location.origin + '/SPio');
        socket.on('sendTimer', function (data) {
          console.log('sending timer');
-         socket.emit('timerSent', { time: Date.now() });
+         var time = Date.now();
+         socket.emit('timerSent', { time: time });
        });
        socket.on('timerPingback', function (data) {
          console.log('recieved pingback');
