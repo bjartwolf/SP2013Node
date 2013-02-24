@@ -3,9 +3,13 @@ html(lang="en")
   head
     title= pageTitle
     script(src='/socket.io/socket.io.js')
+    script(src='/public/jquery-1.9.1.min.js')
+    script(src='/public/toastr-1.1.5.min.js')
+    link(rel='stylesheet', href='/public/toastr.min.css', type='text/css' )
     script
        var socket = io.connect(location.origin + '/SPio');
        socket.on('sendTimer', function (data) {
+         toastr.info('welcome');
          console.log('sending timer');
          var time = Date.now();
          socket.emit('timerSent', { time: time });
