@@ -2,14 +2,16 @@ doctype 5
 html(lang="en")
   head
     title= pageTitle
+    script
+        var hostweburl = "https://bjartwolf.sharepoint.com";
     script(src='/socket.io/socket.io.js')
     script(src='/public/jquery-1.9.1.min.js')
+    script(src='/public/sp.ui.controls.js')
     script(src='/public/toastr-1.1.5.min.js')
     link(rel='stylesheet', href='/public/toastr.min.css', type='text/css' )
     script
        var socket = io.connect(location.origin + '/SPio');
        socket.on('sendTimer', function (data) {
-         toastr.info('welcome');
          console.log('sending timer');
          var time = Date.now();
          socket.emit('timerSent', { time: time });
@@ -23,8 +25,11 @@ html(lang="en")
        socket.on('yo', function (data) {
          console.log(data);
        });
+       $(document).ready(function () {
+           var nav = new SP.UI.Controls.Navigation("SPChrome", { 'appTitle' : "my node js sharepoint app"});
+       });
   body
-    h1 Jade - node template engine
+    #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": "https://bjartwolf.sharepoint.com", "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
     #container
     p I thinks you are #{token} 
 

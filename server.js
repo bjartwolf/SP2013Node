@@ -66,9 +66,9 @@ var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, use
 
 SPio.on('connection', function (client) {
   console.log('connected socket io');
-  setInterval(function () { 
-      io.of('/SPio').emit('sendTimer', 'do it');
-    }, 1000);
+//  setInterval(function () { 
+//      io.of('/SPio').emit('sendTimer', 'do it');
+//    }, 1000);
   client.on('timerSent', function (data) {
 //      var username = client.handshake.session.user.username;
       client.emit('timerPingback', data);
