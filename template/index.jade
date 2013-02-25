@@ -3,7 +3,8 @@ html(lang="en")
   head
     title= pageTitle
     script
-        var hostweburl = "https://bjartwolf.sharepoint.com";
+        var hostweburl = "https://bjartwolf.sharepoint.com/";
+        var appweburl = "https://bjartwolf.sharepoint.com/";
     script(src='/socket.io/socket.io.js')
     script(src='/public/jquery-1.9.1.min.js')
     script(src='/public/sp.ui.controls.js')
@@ -27,8 +28,36 @@ html(lang="en")
          console.log(data);
        });
        $(document).ready(function () {
-           var nav = new SP.UI.Controls.Navigation("SPChrome", { 'appTitle' : "my node js sharepoint app"});
+            var scriptbase = "https://bjartwolf.sharepoint.com" + "/_layouts/15/";
+            $.getScript(scriptbase + "SP.RequestExecutor.js", execCrossDomainRequest);
+            var nav = new SP.UI.Controls.Navigation("SPChrome", { 'appTitle' : "my node js sharepoint app"});
        });
+       function execCrossDomainRequest() {
+            var executor;
+            // Initialize the RequestExecutor with the app web URL.
+            executor = new SP.RequestExecutor(appweburl);
+                            // Issue the call against the host web.
+            // To get the title using REST we can hit the endpoint:
+            //      app_web_url/_api/SP.AppContextSite(@target)/web/title?@target='siteUrl'
+            // The response formats the data in the JSON format.
+            // The functions successHandler and errorHandler attend the
+            //      success and error events respectively.
+            executor.executeAsync( {
+                    url: "https://bjartwolf.sharepoint.com/_api/web/title",
+                    method: "GET",
+                    headers: { "Accept": "application/json; odata=verbose" },
+                    success: successHandler,
+                    error: errorHandler
+                    }
+            );
+        }
+        function successHandler(data) {
+            var jsonObject = JSON.parse(data.body);
+            toastr.info(jsonObject.d.Title);
+        }
+        function errorHandler(data, errorCode, errorMessage) {
+            toastr.error(errorMessage);                
+        }
   body
     #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": "https://bjartwolf.sharepoint.com", "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
     #container

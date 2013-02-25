@@ -4,7 +4,7 @@ module.exports = function (io) {
       console.log('connected socket io with user ' + client.handshake.session.user.username );
       setInterval(function () { 
           io.of('/SPio').emit('sendTimer', 'do it');
-        }, 1000);
+        }, 30000);
       client.on('timerSent', function (data) {
           client.emit('timerPingback', data);
       });
