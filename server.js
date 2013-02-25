@@ -61,7 +61,7 @@ var users = [];
 
 require('./spPassport.js')(passport, users, keys); 
 var authRoutes = require('./routes/authRoutes.js')(passport);
-var routes = require('./routes/routes.js')(SPio);
+var routes = require('./routes/routes.js')(io, SPio);
 
 var eventRoutes = require('./eventRoutes/eventRoutes.js')(io, SPio);
 

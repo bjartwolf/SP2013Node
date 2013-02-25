@@ -2,7 +2,7 @@ var express = require('express');
 var request = require('request');
 var app = express();
 
-module.exports = function (SPio) {
+module.exports = function (io, SPio) {
     app.configure(function () {
       app.set('views', __dirname + '/../template');
     });
