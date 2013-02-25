@@ -12,13 +12,12 @@ if (production) {
    var keys = require('./keys.js'); // import from env variables 
 } else {
    var fs = require('fs');
-   var keys = require('./devkeys.js'); // importing secret keys,
+   var keys = require('./devkeys.js');
    var privateKey = fs.readFileSync('dummyPrivateKey.pem').toString();
    var certificate = fs.readFileSync('dummyCertificate.pem').toString();
    var options = {key: privateKey, cert: certificate};
 }
 
-// Starting server
 if (production){
     var http = require('http');
     var server = http.createServer(app).listen(process.env.port);
@@ -27,11 +26,9 @@ if (production){
 }
 
 var io = require('socket.io').listen(server);
-var users = [];
-require('./eventRoutes/eventAuth.js')(io, keys, users, sessionStore); // configure security
-io.set('log level', 1);
-
-// serialize and deseriazlie is used by passport to store users in sessions based on user.id, sessions provided by express.session
+var users = []; 
+require('./eventRoutes/eventAuth.js')(io, keys, users, sessionStore); // configure security for socketIO
+io.set('log level', 1); 
 
 require('./spPassport.js')(passport, users, keys); 
 

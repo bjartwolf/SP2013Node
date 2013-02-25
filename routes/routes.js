@@ -2,11 +2,12 @@ var express = require('express');
 var request = require('request');
 var app = express();
 
-module.exports = function (io) {
+module.exports = function (io, passport) {
+
     app.configure(function () {
       app.set('views', __dirname + '/../template');
     });
-    
+
     app.get('/', function (req, res) {
       if (req.user) {
     //    console.log(req.user.refreshToken);

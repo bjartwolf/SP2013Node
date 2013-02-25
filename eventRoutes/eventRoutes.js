@@ -6,8 +6,10 @@ module.exports = function (io) {
           io.of('/SPio').emit('sendTimer', 'do it');
         }, 1000);
       client.on('timerSent', function (data) {
-    //      var username = client.handshake.session.user.username;
           client.emit('timerPingback', data);
       });
+    // Add more client.on here
+    // The requests should be authenticated, and you can get profile info 
+    // var username = client.handshake.session.user.username;
     });
 }
