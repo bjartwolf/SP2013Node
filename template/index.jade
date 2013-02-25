@@ -21,6 +21,7 @@ html(lang="en")
          console.log(data);
          console.log(Date.now());
          console.log(Date.now() - data.time);
+         toastr.info(Date.now() - data.time);
        });
        socket.on('yo', function (data) {
          console.log(data);

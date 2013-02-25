@@ -1,6 +1,5 @@
 var express = require('express'),
     passport = require('passport'),
-    request = require('request'),
     app = express(),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore,
@@ -61,15 +60,14 @@ if (production){
     var server = https.createServer(options, app).listen(1337);
 }
 
-
 var io = require('socket.io').listen(server);
 var SPio = require('./sessionIO.js').startListen(server, keys, sessionStore, users,io);
 
 SPio.on('connection', function (client) {
   console.log('connected socket io');
-//  setInterval(function () { 
-//      io.of('/SPio').emit('sendTimer', 'do it');
-//    }, 1000);
+  setInterval(function () { 
+      io.of('/SPio').emit('sendTimer', 'do it');
+    }, 1000);
   client.on('timerSent', function (data) {
 //      var username = client.handshake.session.user.username;
       client.emit('timerPingback', data);

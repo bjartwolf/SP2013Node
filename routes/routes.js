@@ -1,6 +1,8 @@
 var express = require('express');
+var request = require('request');
 var app = express();
-
+var io = require('socket.io').listen(app);
+var SPio = io.of('/SPio');
 app.configure(function () {
   app.set('views', __dirname + '/../template');
 });
@@ -61,7 +63,7 @@ app.get('/lists', function (req, res) {
           headers : headers2,
           method: 'POST',
         };
-        request(options2, function (e, r, b) {
+        request.post(options2, function (e, r, b) {
           io.of('/SPio').emit('yo2', b);
           console.log(e); 
           console.log(r); 
