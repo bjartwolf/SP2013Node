@@ -22,7 +22,8 @@
     "jwt-simple": "0.1.x",
     "socket.io": "~0.9.13",
     "jade": "~0.28.1",
-    "request": "~2.14.0"
+    "request": "~2.14.0",
+    "connect-ensure-login": "~0.1.0"
   },
   "subdomain": "nodeSPDemo",
   "engines": {

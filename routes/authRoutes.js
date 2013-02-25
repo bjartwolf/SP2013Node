@@ -18,5 +18,8 @@ module.exports = function (passport) {
         req.logout();
         res.redirect('/');
     });
+    app.get('/login', function (req, res) {
+        res.send('Go to SharePoint and start the app from there');
+    });
     return app; 
 };

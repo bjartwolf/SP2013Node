@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require('request');
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var app = express();
 
 module.exports = function (io, passport) {
@@ -8,34 +9,19 @@ module.exports = function (io, passport) {
       app.set('views', __dirname + '/../template');
     });
 
-    app.get('/', function (req, res) {
-      if (req.user) {
-    //    console.log(req.user.refreshToken);
-    //    console.log(req.user.accessToken);
+    app.get('/', ensureLoggedIn('/authenticate/login'), function (req, res) {
         var token = req.user.id;
         res.render('index.jade', {token: token, pageTitle: "authorized"});
-      } else {
-        res.render('index.jade', {token: 'NO TOKEn', pageTitle: "no allows.."});
-      }
     });
     
-    app.get('/lists', function (req, res) {
-      if (req.user) {
+    app.get('/lists', ensureLoggedIn('/authenticate/login'), function (req, res) {
         /*
-        var headers = {
-            'Accept': 'application/json;odata=verbose',
-            'Authorization' : 'Bearer ' + req.user.accessToken
-        };
-        var options = {
-            url: 'https://bjartwolf.sharepoint.com/_api/lists/getbytitle(\'AppList\')?$select=ListItemEntityTypeFullName',
+        var headers = { 'Accept': 'application/json;odata=verbose', 'Authorization' : 'Bearer ' + req.user.accessToken };
+        var options = { url: 'https://bjartwolf.sharepoint.com/_api/lists/getbytitle(\'AppList\')?$select=ListItemEntityTypeFullName',
             url: 'https://bjartwolf.sharepoint.com/_api/web/title', 
-            headers : headers
-        };
-        request.get(options, function(error, response, body) {
-            res.send(body);
-        });
+            headers : headers };
+        request.get(options, function(error, response, body) { res.send(body); });
         */
-    
         var headers = {
             'Accept': 'application/json;odata=verbose',
             'Authorization' : 'Bearer ' + req.user.accessToken
@@ -66,14 +52,9 @@ module.exports = function (io, passport) {
             };
             request.post(options2, function (e, r, b) {
               io.of('/SPio').emit('yo2', b);
-              console.log(e); 
-              console.log(r); 
               res.send(b);
             });
          });
-      } else {
-        res.send('fuck oof');
-      }
     });
     return app;
 }
