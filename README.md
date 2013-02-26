@@ -44,3 +44,14 @@ when using nodejitsu, like I do, you can run
 ```
 
 ![OAuth 2.0 dance](http://www.gliffy.com/pubdoc/4318056/L.png)
+
+
+## SharePoint Client Object Model
+
+To 
+
+```XML
+<AppPrincipal>
+    <Internal AllowedRemoteHostUrl="~remoteAppUrl"/>
+</AppPrincipal>
+```
