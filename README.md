@@ -55,3 +55,10 @@ To allow for cross-domain calls (when the client, as in the browser of the user 
     <Internal AllowedRemoteHostUrl="https://localhost:1337"/>
 </AppPrincipal>
 ```
+
+This gives us two ways for getting data from SharePoint:
+* Using REST calls from the app server 
+  * This uses app permissions
+* Using Client Object model from the clients
+  * I think this is using the users permission on the site, but it might
+    acutally be altered somehow in combination with the app rights
