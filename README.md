@@ -55,6 +55,8 @@ To allow for cross-domain calls (when the client, as in the browser of the user 
     <Internal AllowedRemoteHostUrl="https://localhost:1337"/>
 </AppPrincipal>
 ```
+According to
+http://msdn.microsoft.com/en-us/library/jj163816.aspx
 
 This gives us two ways for getting data from SharePoint:
 * Using REST calls from the app server 
