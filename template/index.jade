@@ -3,8 +3,8 @@ html(lang="en")
   head
     title= pageTitle
     script
-        var hostweburl = "https://bjartwolf.sharepoint.com/";
-        var appweburl = "https://bjartwolf.sharepoint.com/";
+        var hostweburl = #{siteUrl};
+        var appweburl = #{siteUrl};
     script(src='/socket.io/socket.io.js')
     script(src='/public/jquery-1.9.1.min.js')
     script(src='/public/sp.ui.controls.js')
@@ -28,7 +28,7 @@ html(lang="en")
          console.log(data);
        });
        $(document).ready(function () {
-            var scriptbase = "https://bjartwolf.sharepoint.com" + "/_layouts/15/";
+            var scriptbase = #{siteUrl} + "/_layouts/15/";
             $.getScript(scriptbase + "SP.RequestExecutor.js", execCrossDomainRequest);
             var nav = new SP.UI.Controls.Navigation("SPChrome", { 'appTitle' : "my node js sharepoint app"});
        });
@@ -43,7 +43,7 @@ html(lang="en")
             // The functions successHandler and errorHandler attend the
             //      success and error events respectively.
             executor.executeAsync( {
-                    url: "https://bjartwolf.sharepoint.com/_api/web/title",
+                    url: #{siteUrl} + _api/web/title",
                     method: "GET",
                     headers: { "Accept": "application/json; odata=verbose" },
                     success: successHandler,
@@ -59,7 +59,7 @@ html(lang="en")
             toastr.error(errorMessage);                
         }
   body
-    #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": "https://bjartwolf.sharepoint.com", "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
+    #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": #{siteUrl}, "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
     #container
     p I thinks you are #{token} 
 

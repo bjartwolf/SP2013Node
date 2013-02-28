@@ -11,7 +11,7 @@ module.exports = function (io, passport) {
 
     app.get('/', ensureLoggedIn('/authenticate/login'), function (req, res) {
         var token = req.user.id;
-        res.render('index.jade', {token: token, pageTitle: "authorized"});
+        res.render('index.jade', {token: token, pageTitle: "authorized", siteUrl: req.user.host});
     });
     
     app.get('/lists', ensureLoggedIn('/authenticate/login'), function (req, res) {
