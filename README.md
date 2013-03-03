@@ -64,3 +64,5 @@ This gives us two ways for getting data from SharePoint:
 * Using Client Object model from the clients
   * I think this is using the users permission on the site, but it might
     acutally be altered somehow in combination with the app rights
+
+

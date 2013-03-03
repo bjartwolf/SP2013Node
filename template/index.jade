@@ -3,8 +3,10 @@ html(lang="en")
   head
     title= pageTitle
     script
-        var hostweburl = #{siteUrl};
-        var appweburl = #{siteUrl};
+        var hostweburl = decodeURIComponent("#{siteUrl}");
+        var appweburl = "#{spAppWebUrl}";
+        console.log('hostweb is: ' + hostweburl);
+        console.log('appweb is: ' + appweburl);
     script(src='/socket.io/socket.io.js')
     script(src='/public/jquery-1.9.1.min.js')
     script(src='/public/sp.ui.controls.js')
@@ -28,9 +30,13 @@ html(lang="en")
          console.log(data);
        });
        $(document).ready(function () {
-            var scriptbase = #{siteUrl} + "/_layouts/15/";
+            var scriptbase = "#{siteUrl}" + "/_layouts/15/";
             $.getScript(scriptbase + "SP.RequestExecutor.js", execCrossDomainRequest);
-            var nav = new SP.UI.Controls.Navigation("SPChrome", { 'appTitle' : "my node js sharepoint app"});
+            var options = {};
+            options.siteTitle = "Awesome app";
+            options.siteUrl = "#{siteUrl}";
+            options.appTitle = "BjartwolfIncNodeApp";
+            var nav = new SP.UI.Controls.Navigation("SPChrome", options );
        });
        function execCrossDomainRequest() {
             var executor;
@@ -42,8 +48,10 @@ html(lang="en")
             // The response formats the data in the JSON format.
             // The functions successHandler and errorHandler attend the
             //      success and error events respectively.
+            requestUrl = appweburl + "/_api/SP.AppContextSite(@target)/web/title?@target='" + hostweburl + "'";
+            console.log(requestUrl);
             executor.executeAsync( {
-                    url: #{siteUrl} + _api/web/title",
+                    url: requestUrl, 
                     method: "GET",
                     headers: { "Accept": "application/json; odata=verbose" },
                     success: successHandler,
@@ -59,7 +67,7 @@ html(lang="en")
             toastr.error(errorMessage);                
         }
   body
-    #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": #{siteUrl}, "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
+    #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": "#{siteUrl}", "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
     #container
     p I thinks you are #{token} 
 

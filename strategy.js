@@ -63,7 +63,7 @@ Strategy.prototype.authenticate = function(req, options) {
   	spAppToken = req.body.SPAppToken;
   if(req.query && req.query.SPHostUrl)
   	spHostUrl = req.query.SPHostUrl;
-  
+    spAppWebUrl = req.query.SPAppWebUrl;
   //fallback to optional values
   if (spAppToken == undefined || spHostUrl == undefined) {
       spAppToken = options.SPAppToken;
@@ -74,7 +74,7 @@ Strategy.prototype.authenticate = function(req, options) {
     token = jwt.decode(spAppToken, '', true); // no need to eval here
     //console.log('token: ' + token.refreshtoken);// Have refreshtoken here? Why? Ah, it is sent and encrypted in spapptoken
     splitApptxSender = token.appctxsender.split("@");
-    sharepointServer = url.parse(spHostUrl)
+    sharepointServer = url.parse(spHostUrl);
     resource = splitApptxSender[0]+"/"+sharepointServer.host+"@"+splitApptxSender[1];
     spClientID = this._clientID+"@"+splitApptxSender[1];
     appctx = JSON.parse(token.appctx);
@@ -94,13 +94,12 @@ Strategy.prototype.authenticate = function(req, options) {
             // Has the accesstoken, loads the userprofile
             self._loadUserProfile(accessToken, spHostUrl, function(err, profile) {
                     if (err) { return self.error(err); };
-
                     function verified(err, user, info) {
                       if (err) { return self.error(err); }
                       if (!user) { return self.fail(info); }
                       self.success(user, info);
                     }
-                    
+                    profile.spAppWebUrl = spAppWebUrl; 
                     self._verify(accessToken, refreshToken, profile, verified);
                 });  
         });

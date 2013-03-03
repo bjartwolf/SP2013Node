@@ -46,7 +46,7 @@ app.configure(function () {
   app.use('/public', express.static(__dirname + '/static'));
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use('/authenticate', authRoutes);
+  app.use('/Pages', authRoutes);
   app.use('/', routes);
 });
 
