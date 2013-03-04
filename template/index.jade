@@ -11,6 +11,7 @@ html(lang="en")
     script(src='/public/jquery-1.9.1.min.js')
     script(src='/public/sp.ui.controls.js')
     script(src='/public/toastr-1.1.5.min.js')
+    script(src='https://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js')
     link(rel='stylesheet', href='/public/toastr.min.css', type='text/css' )
     script
        var socket = io.connect(location.origin + '/SPio');
@@ -37,7 +38,32 @@ html(lang="en")
             options.siteUrl = "#{siteUrl}";
             options.appTitle = "BjartwolfIncNodeApp";
             var nav = new SP.UI.Controls.Navigation("SPChrome", options );
+            $.getScript(scriptbase + 'SP.Runtime.js', function () {
+                $.getScript(scriptbase + 'SP.js', function () {
+                    $.getScript(scriptbase + 'init.js', function () {
+                        $.getScript(scriptbase + 'SP.UserProfiles.js', function () { });
+                        registerContextAndProxy();
+                    });
+                });
+            });
        });
+       function registerContextAndProxy() {
+            context = new SP.ClientContext(appweburl);
+            var factory = new SP.ProxyWebRequestExecutorFactory(appweburl);
+            context.set_webRequestExecutorFactory(factory);
+            appContextSite = new SP.AppContextSite(context, hostweburl); 
+            this.web = appContextSite.get_web(); 
+            context.load(this.web); 
+            context.executeQueryAsync( 
+                Function.createDelegate(this, successHandler),  
+                Function.createDelegate(this, errorHandler) 
+            ); 
+            function successHandler() { 
+                 document.getElementById("HostwebTitle").innerHTML = 
+                 "<b>" + this.web.get_title() + "</b>"; 
+            } 
+       }
+
        function execCrossDomainRequest() {
             var executor;
             // Initialize the RequestExecutor with the app web URL.
@@ -70,4 +96,4 @@ html(lang="en")
     #SPChrome(data-ms-control='SP.UI.Controls.Navigation', data-ms-options='{ "siteUrl": "#{siteUrl}", "appIconUrl": "public/icon.png","appTitle": "Awesome nodejs app", "appHelpPageUrl": "Help.html", "settingsLinks": [ {"linkUrl": "/lists", "displayName": "Get lists"}, {"linkUrl": "www.vg.no", "displayName": "Im in ur SharePoints"}]}')
     #container
     p I thinks you are #{token} 
-
+    #HostwebTitle

@@ -50,6 +50,7 @@ when using nodejitsu, like I do, you can run
 
 To allow for cross-domain calls (when the client, as in the browser of the user accessing the site, requests data directly from SharePoint) we use the SP.Request.Executor. This creates an iframe in the page that are used to make calls to SharePoint. I haven't tested it, but I think it works once we add the following little bit of code into the app. This should open up to cross-domain calls from scripts hosted on our provider hosted app site.
 
+#TODO - update the app-docs
 ```XML
 <AppPrincipal>
     <Internal AllowedRemoteHostUrl="https://localhost:1337"/>

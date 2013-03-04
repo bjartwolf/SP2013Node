@@ -1,6 +1,6 @@
 {
   "name": "nodeSPDemo",
-  "version": "0.1.1-69",
+  "version": "0.1.1-75",
   "description": "A demo of a SharePoint app in the cloud with node.js",
   "main": "server.js",
   "scripts": {
