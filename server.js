@@ -22,7 +22,7 @@ if (production){
     var http = require('http');
     var server = http.createServer(app).listen(process.env.port);
 } else {
-    var server = https.createServer(options, app).listen(1337);
+    var server = https.createServer(options, app).listen(44305);
 }
 
 var io = require('socket.io').listen(server);
