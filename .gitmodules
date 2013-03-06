@@ -1,0 +1,3 @@
+[submodule "aspc"]
+	path = aspc
+	url = https://github.com/Askild/aspc.git
