@@ -15,6 +15,12 @@ exports = module.exports = function (operation, options, io){
 		return;
 	};
 
+	if (options.entitytype === 'task' && operation === 'Create') {
+		options.request.body.id = new Date().getTime();
+		io.of('/SPio').emit('newTask', options.request.body);
+		return;
+	};
+
 	if (options.entitytype === 'task' && operation === 'Create'){
 		(function (req, res) {
 			console.log(req);
