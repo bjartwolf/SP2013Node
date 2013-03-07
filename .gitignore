@@ -3,3 +3,5 @@
 setkeys.sh
 devkeys.js
 node_modules/
+
+static/Metro-UI/public/
