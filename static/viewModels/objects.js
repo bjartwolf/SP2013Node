@@ -8,7 +8,7 @@
         this.description = ko.observable(description || '');
         this.priority = ko.observable(priority || 'low');
         this.progress = ko.observable(progress || 0.0);
-        this.dueOn = ko.observable(new Date(dueOn || null));
+        this.dueOn = ko.observable(dueOn?new Date(dueOn):new Date());
 
         this.cssClass = ko.computed(function () {
             return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
