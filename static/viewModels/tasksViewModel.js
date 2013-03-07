@@ -27,7 +27,7 @@
 
 
 		self.createNewTask = function () {
-			var newTask = new Task('You','Rule','So much','high',0.5,'07.03.2013');
+			var newTask = new Task( 100,'You','Rule','So much','high',0.5,'07.03.2013');
 			self.addTask(newTask);
 			setTimeout(function () {
 			    newTask.progress(50);
