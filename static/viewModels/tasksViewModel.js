@@ -7,10 +7,18 @@
 
 
 		self.addTask = function (task) {
+		    task.priority.subscribe(function (val) {
+		        self.onTaskChange(task, 'priority', val);
+		    });
 		    task.progress.subscribe(function (val) {
 		        self.onTaskChange(task,'progress',val);
 		    });
-
+		    task.title.subscribe(function (val) {
+		        self.onTaskChange(task, 'title', val);
+		    });
+		    task.description.subscribe(function (val) {
+		        self.onTaskChange(task, 'description', val);
+		    });
 		    self.tasks.push(task);
 		};
 
