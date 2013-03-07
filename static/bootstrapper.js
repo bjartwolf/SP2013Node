@@ -31,7 +31,7 @@ $(document).ready(function () {
         });
     });
 
-    var vm=new TasksViewModel();
+    var vm = new TasksViewModel();
     ko.applyBindings(vm);
 
 });
@@ -80,3 +80,29 @@ function successHandler(data) {
 function errorHandler(data, errorCode, errorMessage) {
     toastr.error(errorMessage);
 }
+
+
+
+
+(function (leap) {
+    if (!leap) {
+        console.log('no leap');
+        return;
+    }
+    var previousFrame;
+    var paused = false;
+    var pauseOnGesture = false;
+
+    // Setup Leap loop with frame callback function
+    var controllerOptions = { enableGestures: true };
+
+    leap.loop(controllerOptions, function (frame) {
+        var hand = frame.hand[0];
+        if (hand) {
+
+
+
+        }
+    });
+
+})(Leap);
