@@ -1,9 +1,9 @@
 (function (exports) {
-	exports.Task = function(id, title, owner, description, priority, progress, dueOn) {
+	exports.Task = function(id, owner, title, description, priority, progress, dueOn) {
 		var self = this;
-		this.id = id;
-		this.title = title;
+		this.id = id;		
 		this.owner = owner;
+		this.title = title;
 		this.description = description;
 		this.priority = priority;
 		this.progress = progress;
