@@ -13,6 +13,7 @@
 		this.cssClass = ko.computed(function(){
 			return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
 		});
+		
 	};
 
     ns.TasksViewModel = function () {
@@ -28,6 +29,12 @@
 		this.tasks.push(new Task('Rachel', 'fix #234','expand the bagdes','high',0.5,'15.12.2012'));
 		this.tasks.push(new Task('Maxim', 'enhancement #234','add a ui to..','low',0.5,'15.12.2012'));
 		this.tasks.push(new Task('Marthe', 'fix #343','rebuild version 1.2.2 to support ...','high',0.5,'15.12.2012'));
+		
+		this.highPriorityTasks = ko.computed(function(){
+			jQuery.grep(function(){
+				
+			});
+		});
 		
     };
 
