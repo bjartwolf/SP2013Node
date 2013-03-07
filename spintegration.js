@@ -1,4 +1,6 @@
-exports = module.exports = function (operation, options){
+var request = require('request');   
+
+exports = module.exports = function (operation, options, io){
 	if (operation === "GetAll" && options.entitytype === "task") {
 		var Task = require('./static/objects/task.js').Task;
 		var tasks = [];
@@ -13,12 +15,47 @@ exports = module.exports = function (operation, options){
 		return;
 	};
 
-	var arroptions = [];
-	for (var key in options){
-		arroptions.push('<tr><td><b>'+key+'</b></td><td>'+options[key].toString()+'</td></tr>');
-	}
-	var optionsString = '<table>'+arroptions.join('')+'</table>';
+	if (options.entitytype === 'task' && operation === 'Create'){
+		(function (req, res) {
+			console.log(req);
+			console.log(res);
+            
+	        var headers = {
+	            'Accept': 'application/json;odata=verbose',
+	            'Authorization' : 'Bearer ' + req.user.accessToken
+	        };
+	        
+	        var options = {
+	            url: req.user.host + '/_api/contextinfo', 
+	            headers : headers
+	        };
+	        request.post(options, function(error, response, body) {
+	            var b = JSON.parse(body);
+	            var formdigest = b.d.GetContextWebInformation.FormDigestValue;
+	            var headers2 = {
+	                'Accept': 'application/json;odata=verbose',
+	                'content-type': 'application/json;odata=verbose',
+	                'X-RequestDigest': formdigest,
+	                'Authorization' : 'Bearer ' + req.user.accessToken
+	            };
 
-	var response = options.response;
-	response.send('<h1>Operation: </h1>'+operation+'<h1>Options: </h1>'+optionsString);
+	            var item = req.body;
+	            item.__metadata = { 'type': 'SP.Data.TasksListItem'};	            
+	    
+	            var options2 = {
+	              url: req.user.host + "/_api/lists/GetByTitle('Tasks')/items", 
+	              body: JSON.stringify(item),
+	              headers : headers2,
+	              method: 'POST',
+	            };
+	            request.post(options2, function (e, r, b) {
+	              var bb = JSON.parse(b);
+	              req.body.id = bb.d.ID;
+	              
+	              io.of('/SPio').emit('newTask', req.body);
+	              res.send(b);
+	            });
+	        });
+    	})(options.request, options.response);
+	};
 };

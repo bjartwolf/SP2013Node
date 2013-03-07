@@ -16,19 +16,20 @@ module.exports = function (io, passport) {
     });
     
     app.get('/lists', ensureLoggedIn('/authenticate/login'), function (req, res) {
-        /*
-        var headers = { 'Accept': 'application/json;odata=verbose', 'Authorization' : 'Bearer ' + req.user.accessToken };
-        var options = { url: 'https://bjartwolf.sharepoint.com/_api/lists/getbytitle(\'AppList\')?$select=ListItemEntityTypeFullName',
-            url: 'https://bjartwolf.sharepoint.com/_api/web/title', 
+        
+        /*var headers = { 'Accept': 'application/json;odata=verbose', 'Authorization' : 'Bearer ' + req.user.accessToken };
+        var options = { url: req.user.host+'/_api/lists/getbytitle(\'Tasks\')?$select=ListItemEntityTypeFullName',
             headers : headers };
-        request.get(options, function(error, response, body) { res.send(body); });
-        */
+        request.get(options, function(error, response, body) { 
+          res.send(body); 
+        });*/
+        
         var headers = {
             'Accept': 'application/json;odata=verbose',
             'Authorization' : 'Bearer ' + req.user.accessToken
         };
         var options = {
-            url: 'https://bjartwolf.sharepoint.com/_api/contextinfo', 
+            url: req.user.host + '/_api/contextinfo', 
             headers : headers
         };
         request.post(options, function(error, response, body) {
@@ -41,18 +42,20 @@ module.exports = function (io, passport) {
                 'Authorization' : 'Bearer ' + req.user.accessToken
             };
             var item = {
-                  '__metadata': { 'type': 'SP.Data.AppListListItem'},
-                  'Title': 'awesome beb' 
+                  '__metadata': { 'type': 'SP.Data.TasksListItem'},
+                  'Title': 'awesome task created '+new Date().getSeconds(),
+                  'Body': 'Awesome desc'
+
             };
     
             var options2 = {
-              url: "https://bjartwolf.sharepoint.com/_api/lists/GetByTitle('AppList')/items", 
+              url: req.user.host + "/_api/lists/GetByTitle('Tasks')/items", 
               body: JSON.stringify(item),
               headers : headers2,
               method: 'POST',
             };
             request.post(options2, function (e, r, b) {
-              io.of('/SPio').emit('yo2', b);
+              io.of('/SPio').emit('newTask', b);
               res.send(b);
             });
          });
@@ -75,7 +78,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("Create", options);      
+      spintegration("Create", options, io);      
     });
 
     app.get('/_api/:entitytype/:id', function (req,res) {
