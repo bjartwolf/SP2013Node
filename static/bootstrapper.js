@@ -132,12 +132,14 @@ function errorHandler(data, errorCode, errorMessage) {
     });
 
     function simulateMouseClick(x, y) {
+        if (!hoverElement) {
+            return;
+        }
         console.log('click ' + x + ', ' + y);
         var evt = document.createEvent("MouseEvents");
         evt.initMouseEvent("click", true, true, window,
           0, x+window.screenLeft, y+window.screenTop, x, y, false, false, false, false, 0, null);
-        var cb = hoverElement;
-        var canceled = !cb.dispatchEvent(evt);
+        var canceled = !hoverElement.dispatchEvent(evt);
 
     }
 
