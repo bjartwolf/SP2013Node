@@ -13,6 +13,7 @@
         this.cssClass = ko.computed(function () {
             return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
         });
+        this.propagate = true;//set temporarily to false when you don't want the object changes to be pushed to server/Sockets
     };
 
 })(window);
