@@ -1,7 +1,6 @@
 (function (ns) {
     var Task = ns.Task;
 
-
     ns.TasksViewModel = function () {
 		var self = this;		
 		self.tasks = ko.observableArray();
@@ -47,12 +46,6 @@
 		    $.getJSON('/_api/task', self.setTasks);
 		};
 
-		this.tasks.push(new Task('Sarah', 'fix #34', 'when user create ..', 'high', 0.5, '15.12.2012'));
-		this.tasks.push(new Task('John', 'fix #35', 'The dashboard is missing ..', 'low', 0.5, '15.12.2012'));
-		this.tasks.push(new Task('Rachel', 'fix #234', 'expand the bagdes', 'high', 0.5, '15.12.2012'));
-		this.tasks.push(new Task('Maxim', 'enhancement #234', 'add a ui to..', 'low', 0.5, '15.12.2012'));
-		this.tasks.push(new Task('Marthe', 'fix #343', 'rebuild version 1.2.2 to support ...', 'high', 0.5, '15.12.2012'));
-
 		self.getAllTasks();
 
 
@@ -71,6 +64,12 @@
 		    }
 		});
 
+		
+		this.highPriorityTasks = ko.computed(function(){
+			jQuery.grep(function(){
+				
+			});
+		});
 		
     };
 

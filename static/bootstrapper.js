@@ -33,7 +33,16 @@ $(document).ready(function () {
 
     var vm = new TasksViewModel();
     ko.applyBindings(vm);
-
+	
+	$('.tile').dblclick(function(){
+		if($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}
+		else {
+			$(this).addClass('selected');
+		}
+	});
+	
 });
 function registerContextAndProxy() {
     context = new SP.ClientContext(appweburl);
