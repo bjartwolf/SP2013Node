@@ -1,18 +1,18 @@
 var socket = io.connect(location.origin + '/SPio');
 socket.on('sendTimer', function (data) {
-    console.log('sending timer');
+    //console.log('sending timer');
     var time = Date.now();
-    socket.emit('timerSent', { time: time });
+    //socket.emit('timerSent', { time: time });
 });
 socket.on('timerPingback', function (data) {
-    console.log('recieved pingback');
+    /*console.log('recieved pingback');
     console.log(data);
     console.log(Date.now());
-    console.log(Date.now() - data.time);
+    console.log(Date.now() - data.time);*/
     toastr.info(Date.now() - data.time);
 });
 socket.on('yo', function (data) {
-    console.log(data);
+    //console.log(data);
 });
 $(document).ready(function () {
     var scriptbase = "#{siteUrl}" + "/_layouts/15/";
@@ -63,7 +63,7 @@ function execCrossDomainRequest() {
     // The functions successHandler and errorHandler attend the
     //      success and error events respectively.
     requestUrl = appweburl + "/_api/SP.AppContextSite(@target)/web/title?@target='" + hostweburl + "'";
-    console.log(requestUrl);
+    //console.log(requestUrl);
     executor.executeAsync({
         url: requestUrl,
         method: "GET",
@@ -101,6 +101,8 @@ function errorHandler(data, errorCode, errorMessage) {
     var isDown = false;
     var sxScale = 2.0;
     var syScale = 2.0;
+    var hoverElement = null;
+    var previousElement = null;
 
     // Setup Leap loop with frame callback function
     var controllerOptions = { enableGestures: true };
@@ -111,13 +113,17 @@ function errorHandler(data, errorCode, errorMessage) {
         if (finger && finger.valid) {
             var p = finger.tipPosition,
                 px = p[0], py = p[1], pz = p[2],
-                sx = Math.floor(sxScale*(px+150)), sy = Math.floor(syScale*(550-py));
+                sx = Math.floor(sxScale * (px + 150)), sy = Math.floor(syScale * (550 - py));
+            previousElement = hoverElement;
+            hoverElement = document.elementFromPoint(sx, sy);
             if (pz < 0 && !isDown) {
                 isDown = true;
+                simulateMouseDown(sx, sy);
                 cursor[0].style.background='green';
             } else if (pz > 0 && isDown) {
                 isDown = false;
                 simulateMouseClick(sx, sy);
+                simulateMouseUp(sx, sy);
                 cursor[0].style.background = 'transparent';
             }
             simulateMouseMove(sx, sy);
@@ -129,38 +135,59 @@ function errorHandler(data, errorCode, errorMessage) {
         console.log('click ' + x + ', ' + y);
         var evt = document.createEvent("MouseEvents");
         evt.initMouseEvent("click", true, true, window,
-          0, x, y, 0, 0, false, false, false, false, 0, null);
-        var cb = document.body;
+          0, x+window.screenLeft, y+window.screenTop, x, y, false, false, false, false, 0, null);
+        var cb = hoverElement;
         var canceled = !cb.dispatchEvent(evt);
-        if (canceled) {
-            // A handler called preventDefault
-            //alert("canceled");
-        } else {
-            // None of the handlers called preventDefault
-            //alert("not canceled");
-        }
+
     }
 
     function simulateMouseMove(x, y) {
         //console.log('move ' + x + ', ' + y);
         if (cursor) {
-            cursor.offset({ top: y, left: x});
+            cursor.offset({ top: y+10, left: x+10});
 
         }
-        var evt = document.createEvent("MouseEvents");
-        evt.initMouseEvent("mouseover", true, true, window,
-          0, x, y, 0, 0, false, false, false, false, 0, null);
-        var cb = document.body;
-        var canceled = !cb.dispatchEvent(evt);
-        if (canceled) {
-            // A handler called preventDefault
-            //alert("canceled");
-        } else {
-            // None of the handlers called preventDefault
-            //alert("not canceled");
+        var cb = hoverElement;
+        if (!cb) {
+            return;
         }
+        console.log(cb.id);
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("mousemove", true, true, window,
+          0, x + window.screenLeft, y + window.screenTop, x, y, false, false, false, false, 0, previousElement);
+        var canceled = !cb.dispatchEvent(evt);
     }
 
+    function simulateMouseDown(x, y) {
+
+        var cb = hoverElement;
+        if (!cb) {
+            return;
+        }
+        console.log(cb.id);
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("mousedown", true, true, window,
+          0, x + window.screenLeft, y + window.screenTop, x, y, false, false, false, false, 0, null);
+
+
+        var canceled = !cb.dispatchEvent(evt);
+
+    }
+    function simulateMouseUp(x, y) {
+
+        var cb = hoverElement;
+        if (!cb) {
+            return;
+        }
+        console.log(cb.id);
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("mouseup", true, true, window,
+          0, x + window.screenLeft, y + window.screenTop, x, y, false, false, false, false, 0, null);
+
+
+        var canceled = !cb.dispatchEvent(evt);
+
+    }
 
 
 })(Leap);
