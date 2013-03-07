@@ -14,6 +14,24 @@
 		    self.tasks.push(task);
 		};
 
+		self.saveTask = function (task, callback) {
+		    var data = ko.getJSON(task);
+		    $.ajax({
+		        type: "POST",
+		        url: '/_api/task/post',
+		        data: data,
+		        dataType: 'json',
+		        success: function (data) {
+		            console.log('task saved');
+		            console.log(data);
+		            if (callback) {
+		                callback(null, data);
+		            }
+		        } 
+		    });
+		};
+
+
 		self.onTaskChange = function (task, property, value) {
 		    if (task.propagate === false) {
 		        return;
@@ -33,13 +51,17 @@
 			}, 1000);
 		};
 
+		self.serverTask2AppTask=function(task){
+		    return new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn);
+
+		};
+
 		self.setTasks = function (tasks) {
-		    if (tasks) {
-		        self.tasks.splice();
+		    if (self.tasks) {
+		        self.tasks([]);
 		    }
 		    for (var i in tasks) {
-		        var task = tasks[i];
-		        self.addTask(new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn));
+		        self.addTask(self.serverTask2AppTask(tasks[i]));
 		    }
 		};
 		self.getAllTasks = function () {
@@ -62,6 +84,10 @@
 		            return;
 		        }
 		    }
+		});
+
+		ns.socket.on('newTask', function (task) {
+		    self.addTask(self.serverTask2AppTask(task));
 		});
 
 		
