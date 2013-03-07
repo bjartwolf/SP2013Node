@@ -1,7 +1,7 @@
 var express = require('express');
 var request = require('request');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
-var spintegration = function () {}; //require(./spintegration.js);
+var spintegration = require('../spintegration.js');
 var app = express();
 
 module.exports = function (io, passport) {
@@ -65,8 +65,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("GetAll", options);
-      res.send('<p>GetAll '+req.params.entitytype+'</p>');
+      spintegration("GetAll", options);      
     });
 
     app.post('/_api/:entitytype', function (req,res) {
@@ -76,8 +75,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("Create", options);
-      res.send('<p>Create '+req.params.entitytype+'</p>');
+      spintegration("Create", options);      
     });
 
     app.get('/_api/:entitytype/:id', function (req,res) {
@@ -87,8 +85,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("Get", options);
-      res.send('<p>Get '+req.params.entitytype+'</p>');
+      spintegration("Get", options);      
     });
 
     app.put('/_api/:entitytype/:id', function (req,res) {
@@ -99,8 +96,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("Update", options);
-      res.send('<p>Update '+req.params.entitytype+'</p>');
+      spintegration("Update", options);      
     });
 
     app.delete('/_api/:entitytype/:id', function (req,res) {
@@ -110,8 +106,7 @@ module.exports = function (io, passport) {
         request: req,
         response: res
       };
-      spintegration("Delete", options);
-      res.send('<p>Delete '+req.params.entitytype+'</p>');
+      spintegration("Delete", options);      
     });
     //***
 
