@@ -1,8 +1,18 @@
-	var Task=function(){
-		var self = this;
-		this.id=0;
-		this.title=ko.observable('knockout js');
-		this.owner=ko.observable('Amr');
-		this.description=ko.observable('create a separate template of knockout js using a template block');
-		this.dueOn=ko.observable('07.03.2013');
-	};
+(function (ns) {
+
+    ns.Task = function (owner, title, description, priority, progress, dueOn) {
+        var self = this;
+        this.id = 0;
+        this.owner = ko.observable(owner);
+        this.title = ko.observable(title || '');
+        this.description = ko.observable(description);
+        this.priority = ko.observable(priority);
+        this.progress = ko.observable(progress);
+        this.dueOn = ko.observable(dueOn);
+
+        this.cssClass = ko.computed(function () {
+            return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
+        });
+    };
+
+})(window);
