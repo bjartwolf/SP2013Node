@@ -40,7 +40,7 @@
 		    }
 		    for (var i in tasks) {
 		        var task = tasks[i];
-		        self.tasks.push(new Task(task.owner, task.title, task.description, task.priority, task.progress, task.dueOn));
+		        self.addTask(new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn));
 		    }
 		};
 		self.getAllTasks = function () {
