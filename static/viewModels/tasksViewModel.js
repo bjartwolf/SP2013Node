@@ -48,7 +48,18 @@
 
 		self.getAllTasks();
 
+		self.highPriorityTasks = ko.computed( function() {
+			return jQuery.grep( self.tasks(), function(task) { return task.priority() == 'high' })
+			},this);
+			
+		self.normalPriorityTasks = ko.computed(function(){
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'normal' })
+			},this);
 
+		self.lowPriorityTasks = ko.computed(function(){
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'low' })
+			},this);	
+			
 		ns.socket.on('moveEvent', function (msg) {
 		    var tasks = self.tasks();
 		    for (var i = 0; i < self.tasks().length; i++) {
@@ -62,13 +73,6 @@
 		            return;
 		        }
 		    }
-		});
-
-		
-		this.highPriorityTasks = ko.computed(function(){
-			jQuery.grep(function(){
-				
-			});
 		});
 		
     };
