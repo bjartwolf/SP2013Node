@@ -4,10 +4,10 @@
 
     ns.TasksViewModel = function () {
 		var self = this;		
-		this.tasks = ko.observableArray();
+		self.tasks = ko.observableArray();
 
 
-		this.addTask = function (task) {
+		self.addTask = function (task) {
 		    task.progress.subscribe(function (val) {
 		        self.onTaskChange(task,'progress',val);
 		    });
@@ -15,7 +15,7 @@
 		    self.tasks.push(task);
 		};
 
-		this.onTaskChange = function (task, property, value) {
+		self.onTaskChange = function (task, property, value) {
 		    if (task.propagate === false) {
 		        return;
 		    }
@@ -26,7 +26,7 @@
 		};
 
 
-		this.createNewTask = function () {
+		self.createNewTask = function () {
 			var newTask = new Task('You','Rule','So much','high',0.5,'07.03.2013');
 			self.addTask(newTask);
 			setTimeout(function () {
@@ -34,11 +34,22 @@
 			}, 1000);
 		};
 
-		this.tasks.push(new Task('Sarah', 'fix #34','when user create ..','high',0.5,'15.12.2012'));
+		self.setTasks = function (tasks) {
+		    for (var i in tasks) {
+		        var task = tasks[i];
+		        self.tasks.push(new Task(task.owner, task.title, task.description, task.priority, task.progress, task.dueOn));
+		    }
+		};
+		self.getAllTasks = function () {
+		    $.getJSON('/_api/task', self.setTasks);
+		};
+		self.getAllTasks();
+
+		/*this.tasks.push(new Task('Sarah', 'fix #34','when user create ..','high',0.5,'15.12.2012'));
 		this.tasks.push(new Task('John', 'fix #35','The dashboard is missing ..','low',0.5,'15.12.2012'));
 		this.tasks.push(new Task('Rachel', 'fix #234','expand the bagdes','high',0.5,'15.12.2012'));
 		this.tasks.push(new Task('Maxim', 'enhancement #234','add a ui to..','low',0.5,'15.12.2012'));
-		this.tasks.push(new Task('Marthe', 'fix #343', 'rebuild version 1.2.2 to support ...', 'high', 0.5, '15.12.2012'));
+		this.tasks.push(new Task('Marthe', 'fix #343', 'rebuild version 1.2.2 to support ...', 'high', 0.5, '15.12.2012'));*/
 
 		ns.socket.on('moveEvent', function (msg) {
 		    var tasks = self.tasks();
