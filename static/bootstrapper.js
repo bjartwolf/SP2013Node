@@ -89,20 +89,78 @@ function errorHandler(data, errorCode, errorMessage) {
         console.log('no leap');
         return;
     }
+    var cursor = null;
+    $(document).ready(function () {
+        $('body').append('<div id="cursor" style="border:1px solid red;position:absolute;width:10px;height:10px;"></div>');
+        cursor = $('#cursor');
+    });
+
     var previousFrame;
     var paused = false;
     var pauseOnGesture = false;
+    var isDown = false;
+    var sxScale = 2.0;
+    var syScale = 2.0;
 
     // Setup Leap loop with frame callback function
     var controllerOptions = { enableGestures: true };
 
-    leap.loop(controllerOptions, function (frame) {
-        var hand = frame.hand[0];
-        if (hand) {
+    leap.loop(controllerOptions, function (frame, done) {
+        //var hand = frame.hands[0];
+        var finger = frame.fingers[0];
+        if (finger && finger.valid) {
+            var p = finger.tipPosition,
+                px = p[0], py = p[1], pz = p[2],
+                sx = Math.floor(sxScale*(px+150)), sy = Math.floor(syScale*(550-py));
+            if (pz < 0 && !isDown) {
+                isDown = true;
+                cursor[0].style.background='green';
+            } else if (pz > 0 && isDown) {
+                isDown = false;
+                simulateMouseClick(sx, sy);
+                cursor[0].style.background = 'transparent';
+            }
+            simulateMouseMove(sx, sy);
+        }
+        done();
+    });
 
+    function simulateMouseClick(x, y) {
+        console.log('click ' + x + ', ' + y);
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window,
+          0, x, y, 0, 0, false, false, false, false, 0, null);
+        var cb = document.body;
+        var canceled = !cb.dispatchEvent(evt);
+        if (canceled) {
+            // A handler called preventDefault
+            //alert("canceled");
+        } else {
+            // None of the handlers called preventDefault
+            //alert("not canceled");
+        }
+    }
 
+    function simulateMouseMove(x, y) {
+        //console.log('move ' + x + ', ' + y);
+        if (cursor) {
+            cursor.offset({ top: y, left: x});
 
         }
-    });
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("mouseover", true, true, window,
+          0, x, y, 0, 0, false, false, false, false, 0, null);
+        var cb = document.body;
+        var canceled = !cb.dispatchEvent(evt);
+        if (canceled) {
+            // A handler called preventDefault
+            //alert("canceled");
+        } else {
+            // None of the handlers called preventDefault
+            //alert("not canceled");
+        }
+    }
+
+
 
 })(Leap);
