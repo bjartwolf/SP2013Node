@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+var spintegration = function () {}; //require(./spintegration.js);
 var app = express();
 
 module.exports = function (io, passport) {
@@ -56,5 +57,63 @@ module.exports = function (io, passport) {
             });
          });
     });
+  
+    //*** SP API Routes
+    app.get('/_api/:entitytype', function (req,res) {
+      var options = {
+        entitytype: req.params.entitytype,
+        request: req,
+        response: res
+      };
+      spintegration("GetAll", options);
+      res.send('<p>GetAll '+req.params.entitytype+'</p>');
+    });
+
+    app.post('/_api/:entitytype', function (req,res) {
+      var options = {
+        entitytype: req.params.entitytype,
+        body: req.body,
+        request: req,
+        response: res
+      };
+      spintegration("Create", options);
+      res.send('<p>Create '+req.params.entitytype+'</p>');
+    });
+
+    app.get('/_api/:entitytype/:id', function (req,res) {
+      var options = {
+        entitytype: req.params.entitytype,
+        id: req.params.id,
+        request: req,
+        response: res
+      };
+      spintegration("Get", options);
+      res.send('<p>Get '+req.params.entitytype+'</p>');
+    });
+
+    app.put('/_api/:entitytype/:id', function (req,res) {
+      var options = {
+        entitytype: req.params.entitytype,
+        id: req.params.id,
+        body: req.body,
+        request: req,
+        response: res
+      };
+      spintegration("Update", options);
+      res.send('<p>Update '+req.params.entitytype+'</p>');
+    });
+
+    app.delete('/_api/:entitytype/:id', function (req,res) {
+      var options = {
+        entitytype: req.params.entitytype,
+        id: req.params.id,
+        request: req,
+        response: res
+      };
+      spintegration("Delete", options);
+      res.send('<p>Delete '+req.params.entitytype+'</p>');
+    });
+    //***
+
     return app;
 }
