@@ -10,6 +10,21 @@
         this.progress = ko.observable(progress || 0.0);
         this.dueOn = ko.observable(dueOn?new Date(dueOn):new Date());
 
+		this.formattedDueOn = ko.computed(function() {
+			
+			var d = self.dueOn();
+			var dd = d.getDate()
+			if ( dd < 10 ) dd = '0' + dd;
+
+			 var mm = d.getMonth()+1
+			 if ( mm < 10 ) mm = '0' + mm;
+
+			 var yy = d.getFullYear() % 100
+			 if ( yy < 10 ) yy = '0' + yy;
+			 
+			  return dd+'.'+mm+'.'+yy;
+		});
+		
         this.cssClass = ko.computed(function () {
             return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
         });
