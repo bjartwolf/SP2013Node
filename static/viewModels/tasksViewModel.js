@@ -135,6 +135,21 @@
 		    }
 			
 		};
+
+		self.onDragTask = function (event, ui) {
+		    var task = this.value;
+		    var x = event.pageX-event.offsetX;
+		    var p = $('#taskboard');
+		    x -= p.position().left;
+		    x /= p.width();
+		    task.progress(x*100);
+		   // task.progress();
+		};
+
+		self.progressToPosition = function (progress) {
+		    var p = $('#taskboard');
+		    return Math.floor(progress() * p.width()/100) + 'px';
+		};
 		
     };
 

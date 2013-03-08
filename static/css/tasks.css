@@ -10,6 +10,7 @@ background:green;
     border-top: 2px solid gray;
     min-height: 150px;
     padding-top: 5px;
+    position:relative;
 }
 
     .priority .low {
@@ -29,4 +30,14 @@ background:green;
     text-align:center;
     font:inherit;
     font-size:x-large;
+}
+
+.tile
+{
+    position:absolute !important;
+}
+
+.ui-draggable-dragging
+{
+    opacity:0.5;
 }
