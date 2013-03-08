@@ -8,9 +8,21 @@ background:green;
 
 .priority {
     border-top: 2px solid gray;
-    height: 200px;
-    padding: 5px;
+    min-height: 150px;
+    padding-top: 5px;
 }
+
+    .priority .low {
+        background-color:green;
+    }
+
+    .priority .normal {
+        background-color:gray;
+    }
+
+    .priority .low {
+        background-color: green;
+    }
 
 .task-group {
     text-transform:uppercase;
