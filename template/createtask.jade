@@ -1,21 +1,22 @@
-a.back-button.big.page-back
-form
-    fieldset
-        legend New task
-        div.input-control.text
-            input.with-helper(name="title",type="text",placeholder="Title...")
-        div.input-control.textarea
-            textarea.with-helper(name="description",placeholder="Description...")
-        div Priority
-        div.input-control.radio
-            input(type="radio")
-            span.helper Low
-        div.input-control.radio
-            input(type="radio")
-            span.helper Normal
-        div.input-control.radio
-            input(type="radio")
-            span.helper High
-
-        div.slider(data-role="slider")
-        input(type="submit",value="Create")
+#createtask-form
+    a.back-button.big.page-back
+    form
+        fieldset
+            legend New task
+            div.input-control.text
+                input.with-helper(name="title",type="text",placeholder="Title...")
+            div.input-control.textarea
+                textarea.with-helper(name="description",placeholder="Description...")
+            div Priority
+            div.input-control.radio
+                input(type="radio")
+                span.helper Low
+            div.input-control.radio
+                input(type="radio")
+                span.helper Normal
+            div.input-control.radio
+                input(type="radio")
+                span.helper High
+            div % Complated
+            div.slider(data-role="slider")
+            input(type="submit",value="Create")
