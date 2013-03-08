@@ -66,4 +66,31 @@ exports = module.exports = function (operation, options, io){
 	        });
     	})(options.request, options.response);
 	};
+
+	if (options.entitytype === 'task' && operation === 'Get') {
+		(function (req, res, options) {
+			console.log(options.id);
+			//console.log(req);
+			//console.log(res);
+            
+	        var headers = {
+	            'Accept': 'application/json;odata=verbose',
+	            'Authorization' : 'Bearer ' + req.user.accessToken
+	        };
+	        var id = options.id;
+	        var options = {
+	            url: req.user.host + '/_api/lists/GetByTitle(\'Tasks\')/items('+id+')', 
+	            headers : headers
+	        };
+	        //console.log(options);
+	        request.get(options, function(error, response, body) {
+	        	console.log(error);
+	        	//console.log(reponse);
+	            var b = JSON.parse(body);
+	            console.log(b);
+	           	res.send(b); 
+	        });
+    	})(options.request, options.response, options);
+	};
+	//http://site url/_api/web/lists/GetByTitle(‘Test')/items(item id)
 };
