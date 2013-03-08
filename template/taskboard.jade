@@ -2,11 +2,30 @@ div.page
     div.page-region
         div.page-region-content
             div.row
-                div.span10(data-bind="foreach:highPriorityTasks")
-                    div.tile(data-bind="ui:{type:'draggable'}")
-                        div.priority
+                div.rotate low
+                div.priority.low
+                    div.span10(data-bind="foreach:lowPriorityTasks")
+                        div.tile(data-bind="ui:{type:'draggable'}")
                             div.tile-content(data-bind="css:cssClass " )
                                 h2(data-bind="text: owner")
                                 h4(data-bind="text: title")
                                 p(data-bind="text:description")
-                               h5(data-bind="text:dueOn")
+                                h5(data-bind="text:formattedDueOn")
+                div.rotate normal
+                div.priority.normal test
+                    div.span10(data-bind="foreach:normalPriorityTasks")
+                        div.tile(data-bind="ui:{type:'draggable'}")
+                            div.tile-content(data-bind="css:cssClass " )
+                                h2(data-bind="text: owner")
+                                h4(data-bind="text: title")
+                                p(data-bind="text:description")
+                                h5(data-bind="text:formattedDueOn")
+                div.rotate high
+                div.priority.high
+                    div.span10(data-bind="foreach:highPriorityTasks")
+                        div.tile(data-bind="ui:{type:'draggable'}")
+                            div.tile-content(data-bind="css:cssClass " )
+                                h2(data-bind="text: owner")
+                                h4(data-bind="text: title")
+                                p(data-bind="text:description")
+                                h5(data-bind="text:formattedDueOn")
