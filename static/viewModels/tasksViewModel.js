@@ -54,9 +54,6 @@
 		self.createNewTask = function () {
 			var newTask = new Task( 0,'You','Rule','So much','high',0.5,'07.03.2013');
 			self.saveTask(newTask);
-			/*setTimeout(function () {
-			    newTask.progress(50);
-			}, 1000);*/
 		};
 
 		self.serverTask2AppTask=function(task){
