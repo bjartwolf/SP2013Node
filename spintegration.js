@@ -26,7 +26,58 @@ function dummyintegration (operation, options, io) {
 
 exports = module.exports = SPIntegration;
 
-function SPIntegration (operation, options, io){	
+function SPIntegration (operation, options, io){
+	if (options.entitytype === 'task' && operation === 'Update'){
+		(function (req, res, opts) {
+	        var headers = {
+	            'Accept': 'application/json;odata=verbose',
+	            'Authorization' : 'Bearer ' + req.user.accessToken
+	        };	        
+	        var options = {
+	            url: req.user.host + '/_api/contextinfo', 
+	            headers : headers
+	        };
+	        request.post(options, function(error, response, body) {
+	            var b = JSON.parse(body);
+	            var formdigest = b.d.GetContextWebInformation.FormDigestValue;
+	            var headers2 = {
+	                'Accept': 'application/json;odata=verbose',
+	                'content-type': 'application/json;odata=verbose',
+	                'X-RequestDigest': formdigest,
+	                'Authorization' : 'Bearer ' + req.user.accessToken
+	            };	           
+	            
+                headers2['X-HTTP-Method'] = 'MERGE';
+                headers2['IF-MATCH'] = '*';	                	            
+
+	            var item = JSON.parse(req.body.task);
+	            item.__metadata = { 'type': 'SP.Data.TasksListItem'};	            
+	    
+	            var options2 = {
+	              url: req.user.host + "/_api/lists/GetByTitle('Tasks')/items("+opts.id+")", 
+	              body: JSON.stringify(item),
+	              headers : headers2,
+	              method: 'POST',
+	            };
+	            
+	            console.log(options2);
+	            request.post(options2, function (e, r, b) {
+	            	if (e) {
+	        			res.send(e);
+	        			return;
+	        		};        
+	              var bb = JSON.parse(b);
+	              //console.log(r);
+	              //console.log(b);
+	              req.body.id = bb.d.ID;
+	              console.log(b);
+	              io.of('/SPio').emit('newTask', bb.d);
+	              res.send(bb.d); //JSON-object of Task from SP
+	            });
+	        });
+    	})(options.request, options.response, options);
+	}
+
 	if (options.entitytype === 'task' && operation === 'Create'){
 		(function (req, res) {
 	        var headers = {
@@ -119,6 +170,8 @@ function SPIntegration (operation, options, io){
 	        	};        	
 	            var b = JSON.parse(body);
 	            //console.log(b.d.results);
+	            var tasks = b.d.results;
+	            
 	           	res.send(b.d.results); //JSON-array of Task objects from SP
 	        });
     	})(options.request, options.response, options);

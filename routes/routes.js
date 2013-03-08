@@ -96,7 +96,7 @@ module.exports = function (io, passport) {
       spintegration("Get", options);      
     });
 
-    app.put('/_api/:entitytype/:id', function (req,res) {
+    app.post('/_api/:entitytype/:id', function (req,res) {
       var options = {
         entitytype: req.params.entitytype,
         id: req.params.id,
