@@ -1,3 +1,7 @@
+.hover{
+background:green;
+}
+
 .page{
 	padding-left:20px;
 }
@@ -6,6 +10,23 @@
  min-height: 300px:
  border-bottom:thick solid #ff0000;
 }
+
+.box{
+    border:1px solid red;
+    height:200px;
+    width:20px;
+    position:relative;
+}
+
+.vertical{
+    top:50px;
+    left:-20px;
+    -webkit-transform:rotate(-90deg);
+    border:1px solid black;
+    display:block;
+    position:absolute;
+}
+
 .rotate {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
