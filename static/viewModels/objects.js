@@ -25,6 +25,10 @@
 			  return dd+'.'+mm+'.'+yy;
 		});
 		
+		this.formattedProgress = ko.computed(function () {
+		    return Math.round(progress) + '%';
+		});
+
         this.cssClass = ko.computed(function () {
 			var cssclass ='';
 			switch(self.priority()) {
