@@ -1,6 +1,6 @@
 var request = require('request');   
 
-exports = module.exports = function (operation, options, io){
+function dummyintegration (operation, options, io) {
 	if (operation === "GetAll" && options.entitytype === "task") {
 		var Task = require('./static/objects/task.js').Task;
 		var tasks = [];
@@ -13,7 +13,7 @@ exports = module.exports = function (operation, options, io){
 
 		options.response.send(tasks);
 		return;
-	};
+	}
 
 	if (options.entitytype === 'task' && operation === 'Create') {
 	    var task = JSON.parse(options.body.task);
@@ -22,7 +22,11 @@ exports = module.exports = function (operation, options, io){
 		io.of('/SPio').emit('newTask', task);
 		return;
 	};
+}
 
+exports = module.exports = dummyintegration; //SPIntegration
+
+function SPIntegration (operation, options, io){	
 	if (options.entitytype === 'task' && operation === 'Create'){
 		(function (req, res) {
 	        var headers = {
@@ -61,7 +65,7 @@ exports = module.exports = function (operation, options, io){
 	            });
 	        });
     	})(options.request, options.response);
-	};
+	}
 
 	if (options.entitytype === 'task' && operation === 'Get') {
 		(function (req, res, options) {			            
@@ -81,5 +85,25 @@ exports = module.exports = function (operation, options, io){
 	           	res.send(b.d); 
 	        });
     	})(options.request, options.response, options);
-	};	
+	}
+
+	if (options.entitytype === 'task' && operation === 'GetAll') {
+		(function (req, res, options) {			            
+	        var headers = {
+	            'Accept': 'application/json;odata=verbose',
+	            'Authorization' : 'Bearer ' + req.user.accessToken
+	        };
+	        var id = options.id;
+	        var options = {
+	            url: req.user.host + '/_api/lists/GetByTitle(\'Tasks\')/items', 
+	            headers : headers
+	        };
+	        
+	        request.get(options, function(error, response, body) {	        	
+	            var b = JSON.parse(body);
+	            console.log(b.d.results);
+	           	res.send(b.d.results); 
+	        });
+    	})(options.request, options.response, options);
+	}	
 };
