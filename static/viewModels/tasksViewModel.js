@@ -21,6 +21,7 @@
 		    self.newTaskDescription('');
 		    self.newTaskPriority('(2) Normal');
 		    self.newTaskProgress(0);
+		    self.newTaskVisible(false);
 		};
 
 		self.toggleCreateTask = function(){
