@@ -1,5 +1,5 @@
 .hover{
-background:green;
+    background:green;
 }
 
 .page{
@@ -13,17 +13,17 @@ background:green;
     position:relative;
 }
 
-    .priority .low {
-        background-color:green;
-    }
+.priority .low {
+    background-color:green;
+}
 
-    .priority .normal {
-        background-color:gray;
-    }
+.priority .normal {
+    background-color:gray;
+}
 
-    .priority .low {
-        background-color: green;    
-    }
+.priority .low {
+    background-color: green;    
+}
 
 .task-group {
     text-transform:uppercase;
@@ -40,4 +40,5 @@ background:green;
 .ui-draggable-dragging
 {
     opacity:0.5;
+    z-index:10000;
 }
