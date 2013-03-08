@@ -44,7 +44,8 @@
 		    if (task.propagate === false) {
 		        return;
 		    }
-		    var msg = { id: task.id, property: value };
+		    var msg = { id: task.id };
+		    msg[property] = value;
 		    if (ns.socket) {
 		        socket.emit('moveEvent', msg);
 		    }
@@ -92,18 +93,19 @@
 		    for (var i = 0; i < self.tasks().length; i++) {
 		        if (tasks[i].id == msg.id) {
 		            delete msg.id;
-		            task[i].propagate = false;
+		            tasks[i].propagate = false;
 		            for (var p in msg) {
 		                tasks[i][p](msg[p]);
 		            }
-		            task[i].propagate = true;
+		            tasks[i].propagate = true;
 		            return;
 		        }
 		    }
 		});
 
 		ns.socket.on('newTask', function (task) {
-		    self.addTask(self.serverTask2AppTask(task));
+		    var task = self.serverTask2AppTask(task);
+		    self.addTask(task);
 		});
 		
     };
