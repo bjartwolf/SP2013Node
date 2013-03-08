@@ -75,7 +75,18 @@
 
 		self.getAllTasks();
 
+		self.highPriorityTasks = ko.computed( function() {
+			return jQuery.grep( self.tasks(), function(task) { return task.priority() == 'high' })
+			},this);
+			
+		self.normalPriorityTasks = ko.computed(function(){
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'normal' })
+			},this);
 
+		self.lowPriorityTasks = ko.computed(function(){
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'low' })
+			},this);	
+			
 		ns.socket.on('moveEvent', function (msg) {
 		    var tasks = self.tasks();
 		    for (var i = 0; i < self.tasks().length; i++) {
@@ -90,6 +101,8 @@
 		        }
 		    }
 		});
+<<<<<<< HEAD
+=======
 
 		ns.socket.on('newTask', function (task) {
 		    self.addTask(self.serverTask2AppTask(task));
@@ -101,6 +114,7 @@
 				
 			});
 		});
+>>>>>>> ad9f5b98a91c2db36e447c4129ed94d2d27b036e
 		
     };
 
