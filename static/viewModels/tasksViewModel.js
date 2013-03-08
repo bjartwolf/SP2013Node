@@ -6,6 +6,7 @@
 		var self = this;		
 		self.tasks = ko.observableArray();
 
+		self.newTaskVisible = ko.observable(false);
 		self.newTaskTitle = ko.observable('');
 		self.newTaskDescription = ko.observable('');
 		self.newTaskPriority = ko.observable('(2) Normal');
@@ -22,8 +23,20 @@
 		    self.newTaskProgress(0);
 		};
 
-
-
+		self.toggleCreateTask = function(){
+		    self.newTaskVisible(!self.newTaskVisible());
+		}
+		self.newTaskVisible.subscribe(function(val){
+		    if(val){
+		        $('#createTaskPane').animate({ right: 0 });
+		        $('#createTaskButton').removeClass('icon-arrow-left-3');
+		        $('#createTaskButton').addClass('icon-arrow-right-3');
+		    }else{
+		        $('#createTaskPane').animate({ right: -430 });
+		        $('#createTaskButton').removeClass('icon-arrow-right-3');
+		        $('#createTaskButton').addClass('icon-arrow-left-3');
+		    }
+		});
 
 
 		self.addTask = function (task) {

@@ -91,3 +91,8 @@
 {
     margin-left:50px;
 }
+
+#createTaskPane
+{
+    right:-430px;
+}
