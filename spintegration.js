@@ -24,7 +24,7 @@ function dummyintegration (operation, options, io) {
 	};
 }
 
-exports = module.exports = dummyintegration; //SPIntegration
+exports = module.exports = SPIntegration;
 
 function SPIntegration (operation, options, io){	
 	if (options.entitytype === 'task' && operation === 'Create'){
@@ -57,11 +57,15 @@ function SPIntegration (operation, options, io){
 	              method: 'POST',
 	            };
 	            request.post(options2, function (e, r, b) {
+	            	if (e) {
+	        			res.send(e);
+	        			return;
+	        		};        
 	              var bb = JSON.parse(b);
 	              req.body.id = bb.d.ID;
 	              
 	              io.of('/SPio').emit('newTask', req.body);
-	              res.send(b);
+	              res.send(bb.d); //JSON-object of Task from SP
 	            });
 	        });
     	})(options.request, options.response);
@@ -79,10 +83,14 @@ function SPIntegration (operation, options, io){
 	            headers : headers
 	        };
 	        
-	        request.get(options, function(error, response, body) {	        	
+	        request.get(options, function(error, response, body) {	
+	        	if (error) {
+	        		res.send(error);
+	        		return;
+	        	};        	
 	            var b = JSON.parse(body);
 	            console.log(b.d);
-	           	res.send(b.d); 
+	           	res.send(b.d); //JSON-object of Task from SP
 	        });
     	})(options.request, options.response, options);
 	}
@@ -99,10 +107,14 @@ function SPIntegration (operation, options, io){
 	            headers : headers
 	        };
 	        
-	        request.get(options, function(error, response, body) {	        	
+	        request.get(options, function(error, response, body) {	 
+	        	if (error) {
+	        		res.send(error);
+	        		return;
+	        	};        	
 	            var b = JSON.parse(body);
 	            console.log(b.d.results);
-	           	res.send(b.d.results); 
+	           	res.send(b.d.results); //JSON-array of Task objects from SP
 	        });
     	})(options.request, options.response, options);
 	}	
