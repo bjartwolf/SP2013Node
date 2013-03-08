@@ -1,8 +1,12 @@
 div.page
     div.page-region
         #taskboard.page-region-content
+            #percentcomplete
+                div.zero 0% done
+                div.fifty 50%
+                div.houndred 100% done
             div.row.task-group
-              span.icon-arrow-right-3
+              span.icon-arrow-right-3(style="font-size:36px !important;")
             #highPriority.row.priority.high(data-bind="ui:{type:'droppable',options:{hoverClass:'hover',tolerance:'intersect',drop:onDropTask, over:changePriority}}")
                 div.span10(data-bind="foreach:highPriorityTasks")
                     div.tile(data-bind="ui:{type:'draggable',options:{refreshPositions:true, drag:$root.onDragTask, helper:'clone', containment:'taskboard'}},value:$data, style:{left:$root.progressToPosition(progress)}")
@@ -21,7 +25,7 @@ div.page
                             p(data-bind="text:description")
                             h5(data-bind="text:formattedDueOn")
             div.row.task-group
-              span.icon-arrow-left-3
+              span.icon-arrow-left-3(style="font-size:36px !important;")
             #lowPriority.row.priority.low(data-bind="ui:{type:'droppable',options:{hoverClass:'hover',tolerance:'intersect',drop:onDropTask, over:changePriority}}")
                 div.span10(data-bind="foreach:lowPriorityTasks")
                     div.tile(data-bind="ui:{type:'draggable',options:{refreshPositions:true, drag:$root.onDragTask, helper:'clone', containment:'taskboard'}},value:$data, style:{left:$root.progressToPosition(progress)}")
