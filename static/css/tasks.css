@@ -10,6 +10,7 @@ background:green;
     border-top: 2px solid gray;
     height: 200px;
     padding: 5px;
+    position:relative;
 }
 
 .task-group {
@@ -17,4 +18,14 @@ background:green;
     text-align:center;
     font:inherit;
     font-size:x-large;
+}
+
+.tile
+{
+    position:absolute !important;
+}
+
+.ui-draggable-dragging
+{
+    opacity:0.5;
 }
