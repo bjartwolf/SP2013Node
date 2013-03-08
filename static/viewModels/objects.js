@@ -26,8 +26,23 @@
 		});
 		
         this.cssClass = ko.computed(function () {
-            return self.priority() == 'high' ? ' bg-color-red' : 'bg-color-green';
+			var cssclass ='';
+			switch(self.priority()) {
+				
+				case 'low':
+				cssclass = 'bg-color-green';
+				break;
+				
+				case 'normal':
+				cssclass = 'bg-color-gray';
+				break;
+				
+				case 'high':
+				cssclass = 'bg-color-red';
+			}
+            return cssclass;
         });
+		
         this.propagate = true;//set temporarily to false when you don't want the object changes to be pushed to server/Sockets
     };
 

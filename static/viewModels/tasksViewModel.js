@@ -108,8 +108,11 @@
 		    self.addTask(task);
 		});
 		
+		self.changePriority =function(event, ui){
+			var task = ui.draggable[0].value;
+			task.priority('normal');
+		};
+		
     };
-
-
 
 })(window);
