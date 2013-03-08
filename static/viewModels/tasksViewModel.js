@@ -135,7 +135,11 @@
 		    }
 			
 		};
-
+		self.onDropTask = function (event, ui) {
+		    var task = ui.draggable[0].value;
+		    //self.saveTask(task);
+            //TODO:uncomment the above line when server is ready to update
+		};
 		self.onDragTask = function (event, ui) {
 		    var task = this.value;
 		    var x = event.pageX-event.offsetX;
