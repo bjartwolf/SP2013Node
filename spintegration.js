@@ -46,8 +46,9 @@ function SPIntegration (operation, options, io){
 	                'X-RequestDigest': formdigest,
 	                'Authorization' : 'Bearer ' + req.user.accessToken
 	            };
-
-	            var item = req.body;
+	            //console.log('*****************************************************************');
+            	//console.log(req.body.task);
+	            var item = JSON.parse(req.body.task);
 	            item.__metadata = { 'type': 'SP.Data.TasksListItem'};	            
 	    
 	            var options2 = {
@@ -56,15 +57,19 @@ function SPIntegration (operation, options, io){
 	              headers : headers2,
 	              method: 'POST',
 	            };
+	            
+	            console.log(options2);
 	            request.post(options2, function (e, r, b) {
 	            	if (e) {
 	        			res.send(e);
 	        			return;
 	        		};        
 	              var bb = JSON.parse(b);
+	              //console.log(r);
+	              //console.log(b);
 	              req.body.id = bb.d.ID;
 	              
-	              io.of('/SPio').emit('newTask', req.body);
+	              io.of('/SPio').emit('newTask', bb.d);
 	              res.send(bb.d); //JSON-object of Task from SP
 	            });
 	        });
@@ -89,7 +94,7 @@ function SPIntegration (operation, options, io){
 	        		return;
 	        	};        	
 	            var b = JSON.parse(body);
-	            console.log(b.d);
+	            //console.log(b.d);
 	           	res.send(b.d); //JSON-object of Task from SP
 	        });
     	})(options.request, options.response, options);
@@ -113,7 +118,7 @@ function SPIntegration (operation, options, io){
 	        		return;
 	        	};        	
 	            var b = JSON.parse(body);
-	            console.log(b.d.results);
+	            //console.log(b.d.results);
 	           	res.send(b.d.results); //JSON-array of Task objects from SP
 	        });
     	})(options.request, options.response, options);

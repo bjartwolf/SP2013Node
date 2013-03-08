@@ -1,5 +1,6 @@
 (function (ns) {
     var Task = ns.Task;
+    var ServerTask = ns.Computas.Task;
 
     ns.TasksViewModel = function () {
 		var self = this;		
@@ -23,7 +24,10 @@
 		};
 
 		self.saveTask = function (task, callback) {
-		    var data = 'task='+ko.toJSON(task);
+		    var appTask = self.AppTask2ServerTask(task);	
+		    var data = 'task='+ko.toJSON(appTask);
+		    //var data = self.AppTask2ServerTask(appTask);	
+
 		    $.ajax({
 		        type: "POST",
 		        url: '/_api/task',
@@ -53,12 +57,20 @@
 
 
 		self.createNewTask = function () {
-			var newTask = new Task( 0,'You','Rule','So much','high',0.5,'07.03.2013');
+			var newTask = new Task( 0, 16 ,'Rule'+new Date().getSeconds(),'So much','(3) Low',0.2,'07.03.2013');
 			self.saveTask(newTask);
 		};
 
+		self.AppTask2ServerTask=function(task){
+		    var newTask = new ServerTask(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn);
+		    return newTask;
+
+		};
+
 		self.serverTask2AppTask=function(task){
-		    return new Task(task.ID, task.AuthorId, task.Title, task.Body, task.Priority, task.PercentComplete, task.DueDate);
+
+		    var newTask = new Task(task.ID, task.AuthorId, task.Title, task.Body, task.Priority, task.PercentComplete, task.DueDate);
+		    return newTask;
 
 		};
 
@@ -77,15 +89,15 @@
 		self.getAllTasks();
 
 		self.highPriorityTasks = ko.computed( function() {
-			return jQuery.grep( self.tasks(), function(task) { return task.priority() == 'high' })
+			return jQuery.grep( self.tasks(), function(task) { return task.priority() == '(1) High' })
 			},this);
 			
 		self.normalPriorityTasks = ko.computed(function(){
-			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'normal' })
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == '(2) Normal' })
 			},this);
 
 		self.lowPriorityTasks = ko.computed(function(){
-			return jQuery.grep(self.tasks(), function(task){ return task.priority() == 'low' })
+			return jQuery.grep(self.tasks(), function(task){ return task.priority() == '(3) Low' })
 			},this);	
 			
 		ns.socket.on('moveEvent', function (msg) {
