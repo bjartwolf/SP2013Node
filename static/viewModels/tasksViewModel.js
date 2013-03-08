@@ -7,12 +7,38 @@
 
 
 		self.addTask = function (task) {
+		    task.priority.subscribe(function (val) {
+		        self.onTaskChange(task, 'priority', val);
+		    });
 		    task.progress.subscribe(function (val) {
 		        self.onTaskChange(task,'progress',val);
 		    });
-
+		    task.title.subscribe(function (val) {
+		        self.onTaskChange(task, 'title', val);
+		    });
+		    task.description.subscribe(function (val) {
+		        self.onTaskChange(task, 'description', val);
+		    });
 		    self.tasks.push(task);
 		};
+
+		self.saveTask = function (task, callback) {
+		    var data = 'task='+ko.toJSON(task);
+		    $.ajax({
+		        type: "POST",
+		        url: '/_api/task',
+		        data: data,
+		        dataType: 'json',
+		        success: function (data) {
+		            console.log('task saved');
+		            console.log(data);
+		            if (callback) {
+		                callback(null, data);
+		            }
+		        } 
+		    });
+		};
+
 
 		self.onTaskChange = function (task, property, value) {
 		    if (task.propagate === false) {
@@ -26,20 +52,24 @@
 
 
 		self.createNewTask = function () {
-			var newTask = new Task( 100,'You','Rule','So much','high',0.5,'07.03.2013');
-			self.addTask(newTask);
-			setTimeout(function () {
+			var newTask = new Task( 0,'You','Rule','So much','high',0.5,'07.03.2013');
+			self.saveTask(newTask);
+			/*setTimeout(function () {
 			    newTask.progress(50);
-			}, 1000);
+			}, 1000);*/
+		};
+
+		self.serverTask2AppTask=function(task){
+		    return new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn);
+
 		};
 
 		self.setTasks = function (tasks) {
-		    if (tasks) {
-		        self.tasks.splice();
+		    if (self.tasks) {
+		        self.tasks([]);
 		    }
 		    for (var i in tasks) {
-		        var task = tasks[i];
-		        self.addTask(new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn));
+		        self.addTask(self.serverTask2AppTask(tasks[i]));
 		    }
 		};
 		self.getAllTasks = function () {
@@ -74,6 +104,20 @@
 		        }
 		    }
 		});
+<<<<<<< HEAD
+=======
+
+		ns.socket.on('newTask', function (task) {
+		    self.addTask(self.serverTask2AppTask(task));
+		});
+
+		
+		this.highPriorityTasks = ko.computed(function(){
+			jQuery.grep(function(){
+				
+			});
+		});
+>>>>>>> ad9f5b98a91c2db36e447c4129ed94d2d27b036e
 		
     };
 
