@@ -29,15 +29,15 @@
 			var cssclass ='';
 			switch(self.priority()) {
 				
-				case 'low':
+				case '(3) Low':
 				cssclass = 'bg-color-green';
 				break;
 				
-				case 'normal':
+				case '(2) Normal':
 				cssclass = 'bg-color-gray';
 				break;
 				
-				case 'high':
+				case '(1) High':
 				cssclass = 'bg-color-red';
 			}
             return cssclass;
