@@ -25,14 +25,10 @@ exports = module.exports = function (operation, options, io){
 
 	if (options.entitytype === 'task' && operation === 'Create'){
 		(function (req, res) {
-			console.log(req);
-			console.log(res);
-            
 	        var headers = {
 	            'Accept': 'application/json;odata=verbose',
 	            'Authorization' : 'Bearer ' + req.user.accessToken
-	        };
-	        
+	        };	        
 	        var options = {
 	            url: req.user.host + '/_api/contextinfo', 
 	            headers : headers
@@ -68,11 +64,7 @@ exports = module.exports = function (operation, options, io){
 	};
 
 	if (options.entitytype === 'task' && operation === 'Get') {
-		(function (req, res, options) {
-			console.log(options.id);
-			//console.log(req);
-			//console.log(res);
-            
+		(function (req, res, options) {			            
 	        var headers = {
 	            'Accept': 'application/json;odata=verbose',
 	            'Authorization' : 'Bearer ' + req.user.accessToken
@@ -82,15 +74,12 @@ exports = module.exports = function (operation, options, io){
 	            url: req.user.host + '/_api/lists/GetByTitle(\'Tasks\')/items('+id+')', 
 	            headers : headers
 	        };
-	        //console.log(options);
-	        request.get(options, function(error, response, body) {
-	        	console.log(error);
-	        	//console.log(reponse);
+	        
+	        request.get(options, function(error, response, body) {	        	
 	            var b = JSON.parse(body);
-	            console.log(b);
-	           	res.send(b); 
+	            console.log(b.d);
+	           	res.send(b.d); 
 	        });
     	})(options.request, options.response, options);
-	};
-	//http://site url/_api/web/lists/GetByTitle(‘Test')/items(item id)
+	};	
 };
