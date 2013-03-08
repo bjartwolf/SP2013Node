@@ -101,20 +101,10 @@
 		        }
 		    }
 		});
-<<<<<<< HEAD
-=======
 
 		ns.socket.on('newTask', function (task) {
 		    self.addTask(self.serverTask2AppTask(task));
 		});
-
-		
-		this.highPriorityTasks = ko.computed(function(){
-			jQuery.grep(function(){
-				
-			});
-		});
->>>>>>> ad9f5b98a91c2db36e447c4129ed94d2d27b036e
 		
     };
 
