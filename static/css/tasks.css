@@ -36,8 +36,9 @@
     display:inline-block;
     width:140px;
     top:120px;
-    left:-60px;
+    left:-90px;
     position:relative;
+    z-index:100;
 }
 
 .tile
@@ -49,4 +50,36 @@
 {
     opacity:0.5;
     z-index:10000;
+}
+
+
+#percentcomplete
+{
+    text-align:center; 
+    z-index:10;
+    position:absolute;
+    width:100%;
+    margin-top:30px;
+}
+
+#percentcomplete div
+{
+    display:inline-block;
+}
+#percentcomplete .zero
+{
+    float:left;
+}
+#percentcomplete .fifty
+{
+   
+}
+#percentcomplete .houndred
+{
+    float:right;
+}
+
+#taskboard
+{
+    margin-left:50px;
 }
