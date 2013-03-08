@@ -27,10 +27,13 @@
 		    var appTask = self.AppTask2ServerTask(task);	
 		    var data = 'task='+ko.toJSON(appTask);
 		    //var data = self.AppTask2ServerTask(appTask);	
-
+		    var url = '/_api/task';
+		    if(task.id){
+		    	url = url + '/'+ task.id;
+		    }
 		    $.ajax({
 		        type: "POST",
-		        url: '/_api/task',
+		        url: url,
 		        data: data,
 		        dataType: 'json',
 		        success: function (data) {
@@ -137,7 +140,7 @@
 		};
 		self.onDropTask = function (event, ui) {
 		    var task = ui.draggable[0].value;
-		    //self.saveTask(task);
+		    self.saveTask(task);
             //TODO:uncomment the above line when server is ready to update
 		};
 		self.onDragTask = function (event, ui) {
@@ -146,13 +149,13 @@
 		    var p = $('#taskboard');
 		    x -= p.position().left;
 		    x /= p.width();
-		    task.progress(x*100);
+		    task.progress(x);
 		   // task.progress();
 		};
 
 		self.progressToPosition = function (progress) {
 		    var p = $('#taskboard');
-		    return Math.floor(progress() * p.width()/100) + 'px';
+		    return Math.floor(progress() * p.width()) + 'px';
 		};
 		
     };

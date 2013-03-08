@@ -66,13 +66,16 @@ function SPIntegration (operation, options, io){
 	        			res.send(e);
 	        			return;
 	        		};        
-	              var bb = JSON.parse(b);
+	        		//console.log(r);
+	        	  //console.log(b);
+	              //var bb = JSON.parse(b);
 	              //console.log(r);
 	              //console.log(b);
-	              req.body.id = bb.d.ID;
-	              console.log(b);
-	              io.of('/SPio').emit('newTask', bb.d);
-	              res.send(bb.d); //JSON-object of Task from SP
+	              //req.body.id = bb.d.ID;
+	              //console.log(b);
+	              console.log(r);
+	              //io.of('/SPio').emit('newTask', bb.d);
+	              res.send(200); //JSON-object of Task from SP
 	            });
 	        });
     	})(options.request, options.response, options);
