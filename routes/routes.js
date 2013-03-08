@@ -10,8 +10,6 @@ module.exports = function (io, passport) {
       app.set('views', __dirname + '/../template');
     });
 
-
-
     app.get('/', ensureLoggedIn('/authenticate/login'), function (req, res) {
         var token = req.user.id;
         res.render('index.jade', {token: token, pageTitle: "authorized", siteUrl: req.user.host, appWeb: req.user.spAppWebUrl});
@@ -19,7 +17,7 @@ module.exports = function (io, passport) {
 
     app.get('/test', ensureLoggedIn('/authenticate/login'), function (req, res) {
         var token = req.user.id;
-        res.render('testing.jade', {token: token, pageTitle: "authorized", siteUrl: req.user.host, appWeb: req.user.spAppWebUrl});
+        res.render('testing.jade', {token: token, pageTitle: "Test page", siteUrl: req.user.host, appWeb: req.user.spAppWebUrl});
     });
     
     app.get('/lists', ensureLoggedIn('/authenticate/login'), function (req, res) {
