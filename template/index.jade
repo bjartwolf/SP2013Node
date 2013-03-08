@@ -31,5 +31,10 @@ html(lang="en")
   body.metrouicss
     include chrome
     include taskoperations
-    include taskboard
-    include createtask
+    div.page
+        div.page-region
+            div.page-region-content(style="width:100%;overflow:scroll;z-index:2;white-space:nowrap")
+                div(style="width:1200px;display:inline-block")
+                    include taskboard
+                div(style="display:inline-block;width:500px;height:100%")
+                    include createtask

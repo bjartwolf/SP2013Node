@@ -4,19 +4,19 @@
         fieldset
             legend New task
             div.input-control.text
-                input.with-helper(name="title",type="text",placeholder="Title...")
+                input.with-helper(name="title",type="text",placeholder="Title...", data-bind="value:newTaskTitle")
             div.input-control.textarea
-                textarea.with-helper(name="description",placeholder="Description...")
+                textarea.with-helper(name="description",placeholder="Description...", data-bind="value:newTaskDescription")
             div Priority
             div.input-control.radio
-                input(type="radio")
+                input(type="radio", name = "taskPriGroup", value="(1) High", data-bind="checked:newTaskPriority")
                 span.helper Low
             div.input-control.radio
-                input(type="radio")
+                input(type="radio", name = "taskPriGroup", value="(2) Normal", data-bind="checked:newTaskPriority")
                 span.helper Normal
             div.input-control.radio
-                input(type="radio")
+                input(type="radio", name = "taskPriGroup", value="(3) Low", data-bind="checked:newTaskPriority")
                 span.helper High
-            div % Complated
-            div.slider(data-role="slider")
-            input(type="submit",value="Create")
+            div % Completed
+            div.slider(data-role="slider", data-bind="attr:{'data-value':newTaskProgress}")
+            button(value="Create", data-bind="click:createNewTask") Create

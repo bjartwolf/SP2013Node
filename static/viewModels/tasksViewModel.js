@@ -6,6 +6,25 @@
 		var self = this;		
 		self.tasks = ko.observableArray();
 
+		self.newTaskTitle = ko.observable('');
+		self.newTaskDescription = ko.observable('');
+		self.newTaskPriority = ko.observable('(2) Normal');
+		self.newTaskProgress = ko.observable(0);
+		//self.priorities = ko.observableArray(['(1) High', '(2) Normal', '(3) Low']);
+
+		self.createNewTask = function () {
+		    var pri = self.newTaskPriority();
+		    var task = new Task(0, 0, self.newTaskTitle(), self.newTaskDescription(), self.newTaskPriority(), self.newTaskProgress());//todo:add duedate
+		    self.saveTask(task);
+		    self.newTaskTitle('');
+		    self.newTaskDescription('');
+		    self.newTaskPriority('(2) Normal');
+		    self.newTaskProgress(0);
+		};
+
+
+
+
 
 		self.addTask = function (task) {
 		    task.priority.subscribe(function (val) {
@@ -59,10 +78,10 @@
 		};
 
 
-		self.createNewTask = function () {
+		/*self.createNewTask = function () {
 			var newTask = new Task( 0, 16 ,'Rule'+new Date().getSeconds(),'So much','(3) Low',0.2,'07.03.2013');
 			self.saveTask(newTask);
-		};
+		};*/
 
 		self.AppTask2ServerTask=function(task){
 		    var newTask = new ServerTask(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn);
@@ -155,7 +174,9 @@
 
 		self.progressToPosition = function (progress) {
 		    var p = $('#taskboard');
-		    return Math.floor(progress() * p.width()) + 'px';
+		    var tiles = $('.tile');
+		    var tilewidth = tiles[0].offsetWidth;
+		    return Math.floor(progress() * (p.width() - tilewidth)) + 'px';
 		};
 		
     };
