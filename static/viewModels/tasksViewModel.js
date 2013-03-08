@@ -58,7 +58,7 @@
 		};
 
 		self.serverTask2AppTask=function(task){
-		    return new Task(task.id, task.owner, task.title, task.description, task.priority, task.progress, task.dueOn);
+		    return new Task(task.ID, task.AuthorId, task.Title, task.Body, task.Priority, task.PercentComplete, task.DueDate);
 
 		};
 
