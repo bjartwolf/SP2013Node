@@ -91,3 +91,8 @@
 {
     margin-left:50px;
 }
+
+.metrouicss .tile .brand > .text, .metrouicss .tile .tile-status > .text {
+    font-size: 10pt;
+    font-weight:bold;
+}
