@@ -23,10 +23,10 @@
 		};
 
 		self.saveTask = function (task, callback) {
-		    var data = ko.getJSON(task);
+		    var data = 'task='+ko.toJSON(task);
 		    $.ajax({
 		        type: "POST",
-		        url: '/_api/task/post',
+		        url: '/_api/task',
 		        data: data,
 		        dataType: 'json',
 		        success: function (data) {
@@ -52,11 +52,11 @@
 
 
 		self.createNewTask = function () {
-			var newTask = new Task( 100,'You','Rule','So much','high',0.5,'07.03.2013');
-			self.addTask(newTask);
-			setTimeout(function () {
+			var newTask = new Task( 0,'You','Rule','So much','high',0.5,'07.03.2013');
+			self.saveTask(newTask);
+			/*setTimeout(function () {
 			    newTask.progress(50);
-			}, 1000);
+			}, 1000);*/
 		};
 
 		self.serverTask2AppTask=function(task){
