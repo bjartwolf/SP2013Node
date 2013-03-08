@@ -121,8 +121,19 @@
 		});
 		
 		self.changePriority =function(event, ui){
-			var task = ui.draggable[0].value;
-			task.priority('normal');
+		    var task = ui.draggable[0].value;
+		    switch (this.id) {
+		        case 'lowPriority':
+		            task.priority('(3) Low');
+		            break;
+		        case 'normalPriority':
+		            task.priority('(2) Normal');
+		            break;
+                case 'highPriority':
+		                task.priority('(1) High');
+		                break;
+		    }
+			
 		};
 		
     };
