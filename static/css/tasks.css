@@ -6,6 +6,14 @@
 	padding-left:20px;
 }
 
+#createNewTask {
+    background-color:#0072C6;
+}
+
+#createNewTask a {
+    color:white;
+}
+
 .priority {
     border-top: 2px solid gray;
     min-height: 150px;
