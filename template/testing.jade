@@ -1,0 +1,45 @@
+doctype 5
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet', href='/public/toastr.min.css', type='text/css' )
+    link(rel='stylesheet', href='/public/css/smoothness/jquery-ui-1.10.1.custom.min.css', type='text/css' )
+    link(rel='stylesheet', href='/public/Metro-UI/css/modern.css', type='text/css' )
+    link(rel='stylesheet', href='/public/Metro-UI/css/modern-responsive.css', type='text/css' )
+    link(rel='stylesheet', href='/public/css/tasks.css', type='text/css' )
+    script
+        var hostweburl = decodeURIComponent("#{siteUrl}");
+        var appweburl = "#{spAppWebUrl}";
+        console.log('hostweb is: ' + hostweburl);
+        console.log('appweb is: ' + appweburl);
+    script(src='/socket.io/socket.io.js')
+    script(src='/public/knockout-2.2.1.js')
+    script(src='/public/jquery-1.9.1.min.js')
+    script(src='/public/jquery-ui-1.10.1.custom.min.js')
+    script(src='/public/knockout-bindings-jqueryui.js')
+    script(src='/public/knockout-bindings.js')
+    script(src='/public/sp.ui.controls.js')
+    script(src='/public/toastr-1.1.5.min.js')
+    script(src='/public/objects/task.js')
+    script(src='/public/viewModels/objects.js')
+    script(src='/public/viewModels/tasksViewModel.js')
+    script(src='/public/leap.min.js')
+    script(src='/public/bootstrapper.js')
+  body.metrouicss
+    include chrome
+    form(action='/_api/task',method='post')
+      label(for='AuthorId') AuthorId
+        input(id='AuthorId',name='AuthorId',type='text',value='16')
+      label(for='Title') Title
+        input(id='Title',name='Title',type='text',value='FromForm')
+      label(for='Body') Body
+        input(id='Body',name='Body',type='text',value='Somebody') 
+      label(for='Priority') Priority
+        input(id='Priority',name='Priority',type='text',value='(3) Low') 
+      label(for='PercentComplete') PercentComplete
+        input(id='PercentComplete',name='PercentComplete',type='text',value='0.2')
+      // label(for='AssignedToId') AssignedToId
+      //   input(id='AssignedToId',name='AssignedToId',type='text',value='16') 
+      label(for='DueDate') DueDate
+        input(id='DueDate',name='DueDate',type='text',value='2013-03-08T11:11:11Z') 
+      input(type='submit')
