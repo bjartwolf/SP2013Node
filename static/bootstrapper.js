@@ -108,7 +108,7 @@ function errorHandler(data, errorCode, errorMessage) {
     var paused = false;
     var pauseOnGesture = false;
     var isDown = false;
-    var sxScale = 2.0;
+    var sxScale = window.screen.width/450;
     var syScale = 2.0;
     var hoverElement = null;
     var previousElement = null;
@@ -122,7 +122,7 @@ function errorHandler(data, errorCode, errorMessage) {
         if (finger && finger.valid) {
             var p = finger.tipPosition,
                 px = p[0], py = p[1], pz = p[2],
-                sx = Math.floor(sxScale * (px + 150)), sy = Math.floor(syScale * (550 - py));
+                sx = Math.floor(sxScale * (px + 150)), sy = Math.floor(syScale * (500 - py));
             previousElement = hoverElement;
             hoverElement = document.elementFromPoint(sx, sy);
             if (pz < 0 && !isDown) {
@@ -143,6 +143,7 @@ function errorHandler(data, errorCode, errorMessage) {
                 
                 if (g.type == "swipe") {
                     if (isDown) {
+                        done();
                         return;
                     }
                     if (g.direction[0] < 0) {
