@@ -137,6 +137,25 @@ function errorHandler(data, errorCode, errorMessage) {
             }
             simulateMouseMove(sx, sy);
         }
+        if (frame.gestures && frame.gestures.length > 0) {
+            var g = frame.gestures[0];
+            if (g.state == 'stop') {
+                
+                if (g.type == "swipe") {
+                    if (isDown) {
+                        return;
+                    }
+                    if (g.direction[0] < 0) {
+                        console.log('swipe left');
+                        simulateEvent('swipeLeft');
+                    } else {
+                        console.log('swipe right');
+                        simulateEvent('swipeRight');
+                    }
+                }
+            }
+            
+        }
         done();
     });
 
@@ -200,5 +219,25 @@ function errorHandler(data, errorCode, errorMessage) {
 
     }
 
+    function simulateEvent(myEvent) {
+        var event;
+        if (document.createEvent) {
+            event = document.createEvent("HTMLEvents");
+            event.initEvent(myEvent, true, true);
+        } else {
+            event = document.createEventObject();
+            event.eventType = myEvent;
+        }
 
-})(Leap);
+        /*event.eventName = myEvent;
+        event.memo = memo || {};*/
+
+        if (document.createEvent) {
+            document.dispatchEvent(event);
+        } else {
+            document.fireEvent("on" + event.eventType, event);
+        }
+    }
+
+
+})(Leap || null);

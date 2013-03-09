@@ -156,6 +156,15 @@
 		    self.addTask(task);
 		});
 		
+		self.onSwipeLeft = function () {
+		    self.newTaskVisible(true);
+		};
+		self.onSwipeRight = function () {
+		    self.newTaskVisible(false);
+		};
+		document.addEventListener("swipeLeft", self.onSwipeLeft, false);
+		document.addEventListener("swipeRight", self.onSwipeRight, false);
+
 		self.changePriority =function(event, ui){
 		    var task = ui.draggable[0].value;
 		    switch (this.id) {
