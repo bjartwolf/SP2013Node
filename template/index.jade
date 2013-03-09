@@ -31,6 +31,11 @@ html(lang="en")
     script(src='/public/tasks-ui.js')
   body.metrouicss
     include chrome
-    include taskoperations
-    include taskboard
-    include createtask
+    div.page
+        div.page-region
+            div.page-region-content(style="z-index:2;white-space:nowrap;overflow:hidden")
+                #createTaskPane(style="display:block;width:500px;height:500px;position:absolute;z-index:10000;background:white;")
+                    include createtask
+                div(style="width:95%")
+                    include taskboard
+
