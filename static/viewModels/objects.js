@@ -33,7 +33,7 @@
 		});
 		
 		this.formattedProgress = ko.computed(function () {
-		    return Math.round(self.progress()) + '%';
+		    return Math.round(self.progress()*100) + '%';
 		});
         
 		this.userImage = ko.computed(function () {
