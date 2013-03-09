@@ -5,5 +5,3 @@ devkeys.js
 node_modules/
 
 static/Metro-UI/public/
-static/leap.min.js
-/static/leap.min.js
