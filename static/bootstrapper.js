@@ -100,8 +100,10 @@ function errorHandler(data, errorCode, errorMessage) {
     }
     var cursor = null;
     $(document).ready(function () {
-        $('body').append('<div id="cursor" style="border:1px solid red;position:absolute;width:10px;height:10px;z-index:99999"></div>');
+        //$('body').append('<div id="cursor" style="border:1px solid red;position:absolute;width:10px;height:10px;z-index:99999"></div>');
+        $('body').append('<canvas id="cursor" width="20" height="20" style="position:absolute;width:20px;height:20px;z-index:99999"></canvas>');
         cursor = $('#cursor');
+        drawPointer(10);
     });
 
     var previousFrame;
@@ -128,15 +130,18 @@ function errorHandler(data, errorCode, errorMessage) {
             if (pz < 0 && !isDown) {
                 isDown = true;
                 simulateMouseDown(sx, sy);
-                cursor[0].style.background='green';
+                drawPointer(true);
             } else if (pz > 0 && isDown) {
                 isDown = false;
                 simulateMouseClick(sx, sy);
                 simulateMouseUp(sx, sy);
-                cursor[0].style.background = 'transparent';
+                drawPointer(10);
             }
             simulateMouseMove(sx, sy);
         }
+
+        
+
         if (frame.gestures && frame.gestures.length > 0) {
             var g = frame.gestures[0];
             if (g.state == 'stop') {
@@ -159,6 +164,29 @@ function errorHandler(data, errorCode, errorMessage) {
         }
         done();
     });
+
+    function drawPointer(r) {
+        var ctx = cursor[0].getContext('2d');
+        ctx.clearRect(0, 0, 20, 20);
+        var radgrad = ctx.createRadialGradient(10, 10, 0, 10, 10, 10);
+        if (r !== true) {
+            // Create gradients
+            radgrad.addColorStop(0, 'rgba(180,180,180,0.5)');
+            radgrad.addColorStop(0.9, 'rgba(180,180,180,0.2)');
+            radgrad.addColorStop(1, 'rgba(255,255,255,0)');
+        } else {
+            radgrad.addColorStop(0, 'rgba(180,255,180,0.8)');
+            radgrad.addColorStop(0.9, 'rgba(180,255,180,0.4)');
+            radgrad.addColorStop(1, 'rgba(255,255,255,0)');
+        }
+
+
+        // draw shapes
+        ctx.fillStyle = radgrad;
+        ctx.rect(0, 0, 20, 20);
+        ctx.fill();
+
+    }
 
     function simulateMouseClick(x, y) {
         if (!hoverElement) {
