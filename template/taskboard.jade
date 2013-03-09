@@ -12,7 +12,8 @@ div.page
                     div.tile.image(data-role="tile-slider",data-bind="tileslider:{}, ui:{type:'draggable',options:{refreshPositions:true, drag:$root.onDragTask, helper:'clone', containment:'taskboard'}},value:$data, style:{left:$root.progressToPosition(progress)}")
                         div.tile-content(data-bind="css:cssClass" )
                             img(data-bind="attr:{src:userImage}")
-                        div.tile-content(data-bind="css:cssClass,text:description" )
+                        div.tile-content(data-bind="css:cssClass" )
+                            div(data-bind="text:description")
                         div.brand.bg-color-orange
                             p.text(data-bind="text: title")
                             div.badge(data-bind="text: formattedProgress")
@@ -22,7 +23,8 @@ div.page
                     div.tile.image(data-bind="tileslider:{}, ui:{type:'draggable',options:{refreshPositions:true, drag:$root.onDragTask, helper:'clone', containment:'taskboard'}},value:$data, style:{left:$root.progressToPosition(progress)}")
                         div.tile-content(data-bind="css:cssClass " )
                             img(data-bind="attr:{src:userImage}")
-                        div.tile-content(data-bind="css:cssClass,text:description" )
+                        div.tile-content(data-bind="css:cssClass" )
+                            div(data-bind="text:description")
                         div.brand.bg-color-orange
                             p.text(data-bind="text: title")
                             div.badge(data-bind="text: formattedProgress")
@@ -33,7 +35,8 @@ div.page
                     div.tile.image(data-bind="ui:{tileslider:{}, type:'draggable',options:{refreshPositions:true, drag:$root.onDragTask, helper:'clone', containment:'taskboard'}},value:$data, style:{left:$root.progressToPosition(progress)}")
                         div.tile-content(data-bind="css:cssClass" )
                             img(data-bind="attr:{src:userImage}")
-                        div.tile-content(data-bind="css:cssClass,text:description" )
+                        div.tile-content(data-bind="css:cssClass")
+                            div(data-bind="text:description")
                         div.brand.bg-color-orange
                             p.text(data-bind="text: title")
                             div.badge(data-bind="text: formattedProgress")
