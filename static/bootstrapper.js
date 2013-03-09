@@ -100,7 +100,7 @@ function errorHandler(data, errorCode, errorMessage) {
     }
     var cursor = null;
     $(document).ready(function () {
-        $('body').append('<div id="cursor" style="border:1px solid red;position:absolute;width:10px;height:10px;"></div>');
+        $('body').append('<div id="cursor" style="border:1px solid red;position:absolute;width:10px;height:10px;z-index:99999"></div>');
         cursor = $('#cursor');
     });
 
@@ -108,7 +108,7 @@ function errorHandler(data, errorCode, errorMessage) {
     var paused = false;
     var pauseOnGesture = false;
     var isDown = false;
-    var sxScale = window.screen.width/450;
+    var sxScale = window.screen.width/390;
     var syScale = 2.0;
     var hoverElement = null;
     var previousElement = null;
