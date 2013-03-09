@@ -4,7 +4,8 @@ ko.bindingHandlers.tileslider = {
         var text = "", options;
         //var type = allBindings.ui.type || allBindings.ui || null;
         options = allBindings.tileslider.options || {};
-
-        $(element).tileBlockSlider(options);
+        setTimeout(function () {
+            $(element).tileBlockSlider(options);
+        }, Math.random() * 3000);
     }
 };
