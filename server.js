@@ -50,3 +50,4 @@ app.configure(function () {
   app.use('/', routes);
 });
 
+require('./aspcexternals.js')(app);
